@@ -1,5 +1,5 @@
 export const SITE = {
-	title: 'Documentation',
+	title: '前端博客',
 	description: 'Your website description.',
 	defaultLanguage: 'en_US',
 };
