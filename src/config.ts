@@ -1,6 +1,6 @@
 export const SITE = {
 	title: '前端博客',
-	description: 'Your website description.',
+	description: 'yxz的个人博客',
 	defaultLanguage: 'en_US',
 };
 
@@ -47,11 +47,14 @@ export type Sidebar = Record<
 >;
 export const SIDEBAR: Sidebar = {
 	en: {
-		'Section Header': [
-			{ text: 'Introduction', link: 'en/introduction' },
-			{ text: 'Page 2', link: 'en/page-2' },
-			{ text: 'Page 3', link: 'en/page-3' },
+		'': [
+			{ text: '首页', link: 'yzz/home' },
+			{ text: '面试题', link: 'yzz/interview-uestions' },
+			{ text: '源码', link: 'yzz/source-code' },
+			{ text: '算法', link: 'yzz/algorithm' },
+			{ text: '工具库', link: 'yzz/page-3' },
+			{ text: '工程化', link: 'yzz/page-3' },
 		],
-		'Another Section': [{ text: 'Page 4', link: 'en/page-4' }],
+		// 'Another Section': [{ text: 'Page 4', link: 'en/page-4' }],
 	},
 };

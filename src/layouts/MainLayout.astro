@@ -25,8 +25,9 @@ const githubEditUrl = `${CONFIG.GITHUB_EDIT_URL}/${currentFile}`;
 	<head>
 		<HeadCommon />
 		<HeadSEO frontmatter={frontmatter} canonicalUrl={canonicalURL} />
+		<!-- 页签标题 -->
 		<title>
-			{frontmatter.title ? `${frontmatter.title} 🚀 ${CONFIG.SITE.title}` : CONFIG.SITE.title}
+			{frontmatter.title ? `${CONFIG.SITE.title}-${frontmatter.title}` : CONFIG.SITE.title}
 		</title>
 		<style>
 			body {
