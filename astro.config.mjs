@@ -11,5 +11,5 @@ export default defineConfig({
 		react(),
 	],
 	site: `https://github.com/yang-xianzhu/yang-xianzhu.github.io.git`,
-	base:'/dist'
+	// base:'/dist'
 });
