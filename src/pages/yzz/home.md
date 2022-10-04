@@ -1,8 +1,9 @@
 ---
-title: hello！
+title: 
 description: Docs intro
 layout: ../../layouts/MainLayout.astro
 ---
+<img src="/middle.jpg" alt="头像" >
 
 **记录学习**
 
