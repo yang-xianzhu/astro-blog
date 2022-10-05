@@ -14,7 +14,7 @@ layout: ../../layouts/MainLayout.astro
 - ✅ **红宝书**
 - ❎ **你不知道的JavaScript系列**
 - ❎ **JavaScript数据结构和算法**
-- ❎ **图解htpp**
+- ❎ **图解http**
 #### 2、`技术`
 - ❎ **学习vue3源码：mini-vue**
 - ❎ **TypeScript的进阶使用**

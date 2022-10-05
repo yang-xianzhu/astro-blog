@@ -10,7 +10,7 @@ const { editHref } = Astro.props as Props;
 const showMoreSection = CONFIG.COMMUNITY_INVITE_URL;
 ---
 
-{showMoreSection && <h2 class="heading">More</h2>}
+<!-- {showMoreSection && <h2 class="heading">More</h2>}
 <ul>
 	{editHref && (
 		<li class={`heading-link depth-2`}>
@@ -60,7 +60,7 @@ const showMoreSection = CONFIG.COMMUNITY_INVITE_URL;
 			</a>
 		</li>
 	)}
-</ul>
+</ul> -->
 <div style="margin: 2rem 0; text-align: center;">
 	<ThemeToggleButton client:visible />
 </div>
