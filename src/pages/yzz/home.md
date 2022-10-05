@@ -1,5 +1,5 @@
 ---
-title: 
+title: 首页
 description: Docs intro
 layout: ../../layouts/MainLayout.astro
 ---
@@ -11,13 +11,14 @@ layout: ../../layouts/MainLayout.astro
 
 ## **学习清单**
 #### 1、`书籍系列`
-- **红宝书**
-- **你不知道的JavaScript系列**
-- **JavaScript数据结构和算法**
+- ✅ **红宝书**
+- ❎ **你不知道的JavaScript系列**
+- ❎ **JavaScript数据结构和算法**
+- ❎ **图解htpp**
 #### 2、`技术`
-- **学习vue3源码：mini-vue**
-- **TypeScript的进阶使用**
-- **React**
+- ❎ **学习vue3源码：mini-vue**
+- ❎ **TypeScript的进阶使用**
+- ✅ **React**
 - **...**
 
 ## 正在产出！

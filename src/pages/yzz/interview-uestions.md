@@ -1,5 +1,5 @@
 ---
-title: 
+title: 面试题
 description: Lorem ipsum dolor sit amet - 2
 layout: ../../layouts/MainLayout.astro
 ---
@@ -422,6 +422,186 @@ a.b.c.d  与 a['b']['c']['d'] 哪个性能更高点
   - forEach方法：遍历每一个成员
   - delete方法：输出某个成员
 
+  #### ES5和ES6的区别，说几个ES6的新增的方法
+
+ES6代表是ES6以后的版本，统称为ES6。
+
+数组的方法:filter reduce sort map some ervey find findIndex
+
+对象的方法:Object.values Object.keys
+
+扩展运算符/收缩运算符
+
+对象的解构赋值 数组的解构赋值 函数形参的默认值
+
+let 和 const let是声明变量的 const常量的
+
+const声明的引用数据类型，里面的属性、元素可以修改，简单数据类型不可以修改。
+
+它们都具有==块级作用域==
+
+新增了块级作用域
+
+#### 使用箭头函数应注意什么/箭头函数和普通函数的区别
+
+- 箭头函数没有自己的this，this指向上一级
+- 箭头函数的参数如果只有一个可以去掉小括号，如果return后面只有一句代码的话可以省略大括号
+- 箭头函数没有`arguments`
+- 箭头函数没有自己的`prototype`
+- 普通函数的this指向最后的调用者
+
+#### 对象转换数组
+
+Object.keys（）把对象的所有key转换成一数组
+
+```js
+const obj ={
+  a:1,
+  b:2,
+  c:3
+}
+const res = Object.keys(obj) // 返回一个新数组
+console.log(res)    // ['a','b','c']
+```
+
+Object.values() 把对象的所有values转换成一数组
+
+```js
+const obj ={
+  a:1,
+  b:2,
+  c:3
+}
+const res = Object.values(obj) // 返回一个新数组
+console.log(res)    // ['1','2','3']
+```
+
+Object.entries() 把对象转化为数组
+
+```js
+const obj ={
+  a:1,
+  b:2,
+  c:3
+}
+const res = Object.entries(obj)
+console.log(res)    // [{a:1},{b:2},{c:3}]
+```
+
+#### ES6新特性
+
+- Promise
+- async / await
+- 箭头函数
+- 对象解构 / 数组解构
+- Proxy代理
+- Map / Set
+- 函数参数默认值
+- let / const
+- 模板字符串
+- symbol
+- 模块化
+- 指数操作符
+- 链操作符
+- Promise.any
+- Object.values（）
+- Bigint
+- String.prototype.replaceAll()
+- 数字分割符
+- 展开运算符
+
+#### 手写call
+
+```js
+Function.prototype.myCall = function (ctx){
+  if(typeof this !== 'function'){
+    throw new Error('Error')
+  }
+  ctx = ctx || window
+  ctx.fn = this 
+  const args = [...arguments].slice(1)
+  const res = ctx.fn(...args)
+  delete ctx,fn
+  return res
+}
+```
+
+#### 手写apply
+
+```js
+Function.prototype.myApply = function (ctx){
+  ctx = ctx || window
+  if(typeof this !== 'function'){
+    throw new Error('Error')
+  }
+  ctx.fn = this 
+  let res
+  if(arguments[1]){
+    res = ctx.fn(...arguments[1])
+  }else{
+    res = ctx.fn()
+  }
+  delete ctx,fn
+  return res
+}
+```
+
+#### 手写bind
+
+```js
+Function.prototype.myBind = function (ctx) {
+  if(typeof this !== 'function'){
+    throw new Error('Error')
+  }
+  ctx = ctx || window 
+  const _this = this
+  const args = [...arguments].slice(1)
+  return function F(){
+    if(_this instanceof F){
+      return new _this(...args,...arguments)
+    }
+    return _this.apply(ctx,[...args,...arguments])
+  }
+}
+```
+
+#### 跨域怎么解决
+
+- jsonp
+- proxy反向代理 -- 通常开发阶段，都是用该方法
+- iframe标签 + tomain
+- 后端配置`cors`
+
+#### css、重绘、重排
+
+- 重排：比如我们操作dom改变它的盒子大小等，影响到它的布局，就会引发浏览器的重排机制，重新计算dom树、css样式树，结合生成布局树，重新排版渲染页面，叫做重排。
+- 重绘：比如单纯改变一个字体大小的，不影响到它的布局排版，那只会引发浏览器的重绘机制，即重新绘制页面，叫做重绘。
+- 细节：引发重排必定会引发重绘，引发重绘不一定会引发重排的。
+
+#### js循环机制的过程；举例说明哪些操作是微任务
+
+因为js的特殊性，只能被设置为单线程的，但是为了解决某些比较耗时的任务阻塞到其他任务执行，就有了同步和异步的概念，同步任务在主线程上执行，异步任务暂时挂起，等到有结果了再去执行。
+
+循环过程：代码是从上往下执行，当遇到异步任务，就会开启并推入到任务队列里面，异步又分宏任务和微任务。同步代码立即执行，同步代码执行完了就去看看任务队列里有没有微任务，有就清空微任务，再去处理宏任务，每次都是循环这个过程，叫做事件循环`eventloop`。
+
+#### webSocket使用经验
+
+websocket是一个`持久化`的协议，相比HTTP这种`非持久`的协议来说。
+
+比如一些官网的人工客服窗口等。
+
+## vue
+
+#### v-if和v-show的使用场景
+
+v-if：是通过动态删除和创建整个DOM元素的，相对而言更消耗性能，一般适用于非频繁切换显示/隐藏
+
+v-show：是通过css的display：none来隐藏整个dom元素的，适用于频繁切换的应用场景
+
+v-for和v-if的优先级
+
+通过源码可以知道，当v-for和v-if同时使用在一个标签上，在vue2里v-for的优先级是比v-if高的，vue3中v-if优先级更高。
+
 #### 对vuex的理解
 
   vuex是用于`状态集中管理`和`数据共享`的，比如一些用户信息、token一般可以存储在vuex和localStorage，搭配使用。
@@ -556,44 +736,8 @@ const UserDetails = {
 - 图片加载不出来，显示默认图片
 - 表单自动获取焦点
 
-#### 跨域怎么解决
 
-- jsonp
-- proxy反向代理 -- 通常开发阶段，都是用该方法
-- iframe标签 + tomain
-- 后端配置`cors`
-
-#### css、重绘、重排
-
-- 重排：比如我们操作dom改变它的盒子大小等，影响到它的布局，就会引发浏览器的重排机制，重新计算dom树、css样式树，结合生成布局树，重新排版渲染页面，叫做重排。
-- 重绘：比如单纯改变一个字体大小的，不影响到它的布局排版，那只会引发浏览器的重绘机制，即重新绘制页面，叫做重绘。
-- 细节：引发重排必定会引发重绘，引发重绘不一定会引发重排的。
-
-#### js循环机制的过程；举例说明哪些操作是微任务
-
-因为js的特殊性，只能被设置为单线程的，但是为了解决某些比较耗时的任务阻塞到其他任务执行，就有了同步和异步的概念，同步任务在主线程上执行，异步任务暂时挂起，等到有结果了再去执行。
-
-循环过程：代码是从上往下执行，当遇到异步任务，就会开启并推入到任务队列里面，异步又分宏任务和微任务。同步代码立即执行，同步代码执行完了就去看看任务队列里有没有微任务，有就清空微任务，再去处理宏任务，每次都是循环这个过程，叫做事件循环`eventloop`。
-
-#### webSocket使用经验
-
-websocket是一个`持久化`的协议，相比HTTP这种`非持久`的协议来说。
-
-比如一些官网的人工客服窗口等。
-
-## vue
-
-#### v-if和v-show的使用场景
-
-v-if：是通过动态删除和创建整个DOM元素的，相对而言更消耗性能，一般适用于非频繁切换显示/隐藏
-
-v-show：是通过css的display：none来隐藏整个dom元素的，适用于频繁切换的应用场景
-
-v-for和v-if的优先级
-
-通过源码可以知道，当v-for和v-if同时使用在一个标签上，在vue2里v-for的优先级是比v-if高的，vue3中v-if优先级更高。
-
-data、props、methods、watch、computed的优先级
+#### data、props、methods、watch、computed的优先级
 
 `props` > `methods` > `data` > `computed` > `watch`
 
@@ -1125,7 +1269,7 @@ XSS攻击有三种类型：`存储型`、`反射型`、`DOM型`
 - 对一些敏感信息进行保护,在`Cookie`信息中添加`httpOnly`,告诉浏览器在保存Cookie,并且不要对客户端脚本开放访问权限,然后就不能通过document.cookie获取cookie了.
 - 使用`验证码`,避免脚本伪装成用户执行一些操作
 
-==HTTP 和 HTTPS协议的区别？==
+#### HTTP 和 HTTPS协议的区别？
 
 - `https`协议需要CA证书，费用较高，而`http`协议不需要
 - `http`协议是超文本传输协议，信息是明文传输的，`https`则是具有较高的安全性，是`密文`传输的
@@ -1153,7 +1297,338 @@ XSS攻击有三种类型：`存储型`、`反射型`、`DOM型`
 - loading
 - 首屏时间较长，如果 `SPA` 单页面可以使用路由懒加载，减少首屏时间。
 
+## 面试记录
 
+#### 1、珠海格力
+###### 箭头函数和普通函数的区别
+
+- 箭头函数没有自己的this指向，它的this指向上下文的，而普通函数this指向最后调用它的那个调用者。
+- 箭头函数没有`arguments`，因为它没有`prototype`属性。
+- 箭头函数更简洁，ES6后出的。
+- 箭头函数的形参当只有一个的时候，可以省略小括号，如果执行体只有一条语句可以去掉大括号，并且可以省略`return`关键字
+
+###### 数组去重的方法
+
+- for、while循环
+- ES6的`new Set`方法
+
+###### 组件通信传递方式
+
+- 父子通信 `props`、`emit`、`ref`
+- vuex、eventBus
+- 跨级组件 `provide`提供者、`inject`消费者
+
+###### vue2的响应式原理是什么
+
+vue2响应式原理使用到了ES6的`Object.defineProperty`来对数据的劫持，进而实现数据的双向绑定。
+
+当我们定义在data里面的数据，vue底层帮我们使用到了defineProperty来给数据绑定`get`和`set`，但读取属性时，会触发get这个方法，当修改属性时，会触发set这个方法，对于一些深层次的结构对象，需要使用递归来遍历每个属性，所以初始化是比较损失性能的。这个方法是不能够侦听到数据的变化的，但是可以使用到vue给我们重写了那七个改变原数组的方法来实现修改数据响应页面，push、pop、unshift、shift、sort、reverse、splice方法。同时给对象后添加新的属性和删除属性，是没有响应式的。可以使用vue给我们提供的$set方法。
+
+###### API封装包含哪些方面
+
+比如设置baseUrl基地址、统一的响应超时时间，请求、响应拦截器等。
+
+- 建立api文件。
+- 根据不同的接口类型存放不同的js文件里，便于后期查找和阅读。
+
+###### 项目中做过了哪些前端优化
+
+- 路由的懒加载，减少首屏加载时间
+- 对于一些小图标，做成精灵图，减少请求次数
+- 一些公共样式单独抽离出来，需要引入使用
+- 对于一些长列表数据，可以使用表格进行分页，数据一页一页的往服务器里取，减少服务器压力
+- api的封装
+- 封装骨架屏，减少用户在等待时间的焦虑
+
+###### 怎么判断数据类型？ 引用类型/常用类型
+
+- 引用类型
+
+  - 利用万能检查类型方法`Object.prototype.toString.call(要检测的数据)`
+
+    ```js
+    const str = '杨某某'
+    console.log(Object.prototype.toString.call(str)) // [object String]
+    ```
+
+- 基本类型
+
+  - typeof
+    - 判断太多数类型都是准确的，注意`typeof null ==> object`
+  - instanceof
+    - 判断目标数据是否在谁的`原型链`上，返回一个布尔值。
+
+###### js中有几种数据类型
+
+- undefined
+- null
+- String
+- Number
+- Boolean
+- Object
+- bigInt  `ES6后出`
+
+###### 跨域的问题
+
+跨域，是浏览器出于安全考虑提出同源策略。是仅仅存在于浏览器和服务器之间，协议、端口号、域名有一个不同都违反了浏览器的同源策略。
+
+解决方法：
+
+- jsonp：只支持get请求，不支持post请求
+- 反向代理：配置一下即可解决跨域问题，底层是帮我们开启了一个微型服务器，通过这个微型服务器去访问目标服务器取数据，去到数据再返回给浏览器，因为服务器和服务器之间是不存在跨域问题的。
+- ifram标+|domain
+
+###### 对vue2的理解
+
+`响应式原理`：vue2是使用`Object.defineProperty`来对数据劫持，实现响应式的。
+
+缺点：
+
+- 初始化数据给数据递归遍历绑定get、set是比较损耗性能的。
+- 不能侦听数据的变化，需要使用到vue给我们重写的那七个方法和`$set`来实现数据的响应式
+- 对于对象后添加的属性和删除属性是无法检测到的，所以不是响应式的，可以利用`$set`方法
+- 对于vue2，vue3使用的`Proxy`代理对象实现数据的响应式的，这个方法实现数据的响应式比起vue2来说，性能来说是比较好的，因为Proxy是对整个对象做代理，不需要递归遍历所有数据绑定get、set，而且能够侦听数组的变化，对于对象后添加的属性也能监听到。
+
+###### vue2和vue3的区别
+
+- 实现响应式原理不一样
+- vue3不需要像vue2那样this拿数据
+- vue3使用了TS重写了，更好的类型推断，更好的支持TS
+- `重要`：vue3也引入了`hooks`函数
+- 定义数据方式不一样，vue2是传统的`options`api，而vue3改为了`composition`api，传统的options更好的学习成本，利于初学者学习，但不利用后期维护，composition更好复用代码以及后期维护
+- vue3最大的特点，我觉得是引入了hooks，更好的代码复用，也解决了vue2的代码复用mixins的缺点：`数据来源不够明确`，`命名冲突`等问题。hooks的出现正好解决了这个问题。
+- 生命周期不一样：vue3移除了`beforeCreate`和`created`钩子，可使用`setup`方法代替vue2的beforeDestroy===>beforeUnMount 、 destroyed  ----  unMounted
+
+###### 项目中平时怎么管理接口
+
+- 利用apipost管理
+
+###### 项目中对于重复请求是如何解决的
+
+利用`repeat-request-minde`这个库检测有没有重复请求接口。
+
+重复请求的危害：
+
+- 增加服务器的压力
+- 可能会因为其中的某个请求失败导致页面显示错误
+
+解决思路：
+
+- 前置处理：一般开发的时候可能不会留意到有重复的请求，要避免这种情况需要自动监控并给出警告，才能从源头杜绝重复请求的发生。
+- 后置处理：出现了重复请求之后能够自动取最后的请求，不发出之前的请求。
+- 先找出重复请求的根源，比如一些按钮，用户短时间多次点击导致的多次请求，这时可以利用按钮的`disabled`属性关闭按钮的点击功能，又或者添加一些loading框，防止用户多次点击，导致重复请求。
+
+###### 服务端渲染-SSR
+
+`hydration` 注水：服务端渲染场景下，首次渲染返回静态字符串，并没有交互能力。这时需要对代码进行注水，使之功能完整。
+
+## 小程序
+
+#### 小程序和H5的区别
+
+- 运行环境方面
+- 运行机制方面
+- 系统权限方面
+- 开发语言方面
+- 开发成本方面
+- 更新机制方面
+- 渲染机制方面
+
+#### 项目遇到的问题
+
+#### 移动端点击事件300ms延迟问题
+
+问题描述：移动端web网页触屏事件是有300ms延迟的，往往会造成按钮点击延迟甚至是点击失效。
+
+解决方法：
+
+- 借助fastclick可以解决在手机上点击事件的300ms延迟
+- zepto.js的touch模块，tap事件也是为了解决click的延迟问题
+
+#### audio 和 video在ios和andriod中自动播放
+
+由于优化用户体验，苹果系统和安卓系统通常都会禁止自动播放和禁止页面加载时使用JS触发播放，必须由用户主动点击页面才可以触发播放。通过给页面根元素加touchstart的监听事件实现触发播放
+
+```js
+$('html').one('touchstart', function() {
+  audio.play()
+})
+```
+
+#### 项目优化
+
+###### token的主动处理：
+
+- 用户登录时获取到token，存储到vuex和本地中，把当前时间戳存储进去，然后每次发送请求都会携带token过去，请求之前就判断一下 如果当时存储token的时间戳 - 现在的时间戳 >=设置的token过期时间，就拿ref_token去获取新的token，然后重新存储到vuex和本地中，然后发送请求。
+
+#### iphone7用for...in遍历数组失效
+
+问题描述：最初学习使用js时，觉得`for...in`遍历比`for循环`简洁，后期在用户反馈后发现iPhone7不支持用for...in遍历数组
+
+解决方法：改为了for循环遍历
+
+
+
+#### webpack的基本配置
+
+- mode:指定打包的模式，development 或 production
+- devtool：指定生成sourceMap的方式
+- entry：配置入口文件。多文件打包的话要打包几个文件，就在entry中写几个入口，output的filename用占位符`[name]`表示。
+- loader：辅助打包的各种工具。
+- plugins：插件，loader被用于转换某些类型的模块，而插件则可以用于执行范围更广的任务。如htmlWebpackPlugin,CleanWebpackPlugin。
+- devServer：使用WebpackDevServer开启热更新，提升开发效率。
+
+
+#### 后台管理系统的动态路由表的坑
+
+利用addRoutes添加动态路由表，但还没生成就已经跳转到其他页面去了，怎么解决？
+
+- 等动态路由表生成后再`mouted`挂载
+
+  ```js
+  const vm = new Vue({
+    store,
+    render:h=>h(App),
+    router
+    ....
+  })
+  // 此处判断是否生成了动态表了
+  vm.mouted('#app')
+  ```
+
+在动态路由页面里刷新会出现404怎么解决？
+
+- 原因：因为生成动态路由表的数据是存储在vuex里面的，因为vuex的数据是存储在内存里的，刷新会丢失，所以vuex里的数据刷新会重置。
+- 解决方法：
+  - 把vuex里面的动态路由表的数据也存储一份到本地里面，持久化​
+
+细节：退出登录时，记得把动态路由表的数据清空掉，要不会出现下次不同账号的用户登录也会有上一个用户的权限。
+
+#### 组件内守卫
+
+```js
+const UserDetails = {
+  template: `...`,
+  beforeRouteEnter(to, from) {
+    // 在渲染该组件的对应路由被验证前调用
+    // 不能获取组件实例 `this` ！
+    // 因为当守卫执行时，组件实例还没被创建！
+  },
+  beforeRouteUpdate(to, from) {
+    // 在当前路由改变，但是该组件被复用时调用
+    // 举例来说，对于一个带有动态参数的路径 `/users/:id`，在 `/users/1` 和 `/users/2` 之间跳转的时候，
+    // 由于会渲染同样的 `UserDetails` 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+    // 因为在这种情况发生的时候，组件已经挂载好了，导航守卫可以访问组件实例 `this`
+  },
+  beforeRouteLeave(to, from) {
+    // 在导航离开渲染该组件的对应路由时调用
+    // 与 `beforeRouteUpdate` 一样，它可以访问组件实例 `this`
+  },
+}
+```
+
+#### 路由的完整的导航解析流程
+
+- 导航被触发
+- 在失活的组件里调用`beforeRouteLeave`守卫
+- 调用全局的`beforeEach`守卫
+- 在重用的组件里调用`beforeRouteUpdate`守卫
+- 在路由配置里调用`beforeEnter`
+- 解析异步路由组件
+- 在被激活的组件里调用`beforeRouteEnter`
+- 调用全局的`beoforeResolve`守卫
+- 导航被确认
+- 调用全局的`afterEach`钩子
+- 触发DOM更新
+- 调用`beforeRouteEnter`守卫中传给`next`的回调函数，创建好的组件实例会作为回调函数的参数传入
+
+#### 路由缓存
+
+- 使用`<keep-alive>`可缓存路由
+- 它有`include` 和 `exclude`两个属性，分别表示包含或排除某些路由，值可以是字符串、数组、正则表达式
+- 独有的声明周期方法:`activited`、`deactivited`
+
+#### 数据类型
+
+- 简单数据类型：`number`、`string`、`null`、`undefined`、`symbol(es6后)`、`bigInt(es6后)`、`boolean`
+- 复杂/引用数据类型：object
+
+#### isNaN 和 Number.NaN的区别
+
+`isNaN`:
+
+- 只要不是number就会返回 true
+
+```js
+isNaN(NaN); // true
+isNaN('A String'); // true
+isNaN(undefined); // true
+isNaN({}); // true
+```
+
+`Number.isNaN`:
+
+相当与是isNaN的加强版，弥补了`isNaN`很多的不足。
+
+先判断是否是`number`类型，再判断是否是`NaN`。
+
+```js
+Number.isNaN(NaN); // true
+
+Number.isNaN('A String'); // false
+
+Number.isNaN(undefined); // false
+
+Number.isNaN({}); // false
+```
+
+#### 变量命名方式
+
+小驼峰命名法、大驼峰命名法，变量名应`见名知意`
+
+
+
+#### vue中子组件能修改父组件的数据吗
+
+不能，因为vue中推嵩的是单向数据流，这样更好清楚数据的流向，但是引用数据类型的数据可以修改，因为修改引用类型是修改它里面的元素，而不是它的地址，但是vue也是不建议我们去修改的， 因为这会让`数据流难以理解`。
+
+通过子组件利用emit去修改父组件里的数据
+
+利用emit去触发父组件里的自定义事件，那个回调的参数就是emit那边传递过来的值。
+
+#### 路由的hash和history模式有什么区别
+
+- hash模式：`兼容性更好`、但`不美观`，url上会带有`#`，跳转路由时不会向服务器发送请求。
+- history模式：相比hash模式，url更美观，跳转路由时会向服务器发送请求，刷新页面有可能会跳转到404页，因为它会把路由path当作参数向服务器发请求，需要后端配置才能用。
+
+#### 小程序的图片高度自适应
+
+```js
+<image mode="heightFix"></image>
+```
+
+#### 多点登录状态限制问题怎么实现
+
+- webSocket:长链接实现
+- 设置一个缓存层比如redis存储token，每次登录都生成新的token，会把之前的token覆盖掉，校验的时候从缓存校验一次就可以实现。
+
+#### 性能优化
+
+- 代码效率优化
+- 网络请求的优化
+
+#### 从输入url到回车发生了什么
+
+![img](https://static001.geekbang.org/resource/image/95/5b/9550f050235a9bc0a91dc6e33f7e9e5b.jpg?wh=1920x923)
+
+#### 接到需求怎么去拆分
+
+STAR 原则
+
+- Situation（情景）：什么情景下，产生的需求。
+- Task（任务）：当时负责的模块。
+- Action（行动）：你怎么去做，怎么去排期。
+- Result（结果）：结果如何。
 
 ## TypeScript进阶
 
