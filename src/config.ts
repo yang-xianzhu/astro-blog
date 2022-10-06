@@ -52,6 +52,7 @@ export const SIDEBAR: Sidebar = {
 			{ text: '面试题', link: 'yzz/interview-uestions' },
 			{ text: '源码', link: 'yzz/source-code' },
 			{ text: '算法', link: 'yzz/algorithm' },
+			{ text: '书籍', link: 'yzz/books' },
 			{ text: '工具库', link: 'yzz/page-3' },
 			{ text: '工程化', link: 'yzz/page-3' },
 		],
