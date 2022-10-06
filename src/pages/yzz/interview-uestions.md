@@ -1638,19 +1638,19 @@ STAR 原则
 
 #### 概述
 
-​	  git是一块免费、开源的分布式版本控制系统，用于敏捷高效地处理任何或小或大的项目。目前是最受欢迎的版本管理工具，应用在各行各业的版本管理，尤其在IT行业广泛使用。git分为三个区：
+​	git是一块免费、开源的分布式版本控制系统，用于敏捷高效地处理任何或小或大的项目。目前是最受欢迎的版本管理工具，应用在各行各业的版本管理，尤其在IT行业广泛使用。git分为三个区：
 
 ![image-20221006090353919](/git图解.png)
 
-​	  由上图可以看出，git版本控制有三个区，分别是工作区、暂存区、本地仓库，简单理解的话，未执行`git add` 命令的话是在工作区，执行了`git add` 之后到了暂存区，执行了`git commit `之后到了本地仓库中。
+​	由上图可以看出，git版本控制有三个区，分别是工作区、暂存区、本地仓库，简单理解的话，未执行`git add` 命令的话是在工作区，执行了`git add` 之后到了暂存区，执行了`git commit `之后到了本地仓库中。
 
-​	  另外建议大家经常使用git命令面板执行相关命令，git bash 面板是一个非常好用的工具，不仅可以使用git相关的命令，还可以执行linux部分命令，如登陆远程服务器 `ssh root@hostname ` 任何输入账号密码即可，也可以通过下载相关的包，支持更多的命令，如zip命令等。
+​	另外建议大家经常使用git命令面板执行相关命令，git bash 面板是一个非常好用的工具，不仅可以使用git相关的命令，还可以执行linux部分命令，如登陆远程服务器 `ssh root@hostname ` 任何输入账号密码即可，也可以通过下载相关的包，支持更多的命令，如zip命令等。
 
 
 
 #### 基础
 
-```js
+```git
 # 初始化仓库
 git init # 初始化项目 生成.git文件
 # 状态查询
@@ -1658,21 +1658,136 @@ git status # 查看当前状态，看提示的颜色和标志，区分文件需�
 		-s #git status 简化 注意前面的字母标志，分为两列，第一列是对staging区域而言，第二列是对wording目录而言。同时注意字母的颜色，区分当前文件的状态。
 ```
 
-
-
 #### 追踪
 
-```js
+```git
 git add # 将文件添加到暂存区，非常重要的一个操作，这样就可以实时的对你的文件进行跟踪了。
 git add <filename> # 将 filename 文件添加到暂存区
 git add . # 将所有文件添加到暂存区
 git add -A # 添加所有改动文件到暂存区 （不常用）
 git add -u # 添加有改动并且已追踪的文件 （不常用）
 git clean
-		-n # 并不删除操作，只显示将呗清理的文件列表
-		-f # 删除文件，但不会动 .gitignore 里的标记
-		-d # 删除目录，但不会动 .gitignore里的标记
-		-x # 仅删除.gitignore 里标记的文件
-		-df # 删除未跟踪的文件和文件夹
+					-n # 并不删除操作，只显示将呗清理的文件列表
+					-f # 删除文件，但不会动 .gitignore 里的标记
+					-d # 删除目录，但不会动 .gitignore里的标记
+					-x # 仅删除.gitignore 里标记的文件
+					-df # 删除未跟踪的文件和文件夹
 ```
+
+#### 比较
+
+```js
+# 比较文件，默认是工作区和暂存区文件比较，不加参数是所有文件
+git diff 
+# 暂存区和本地仓库比较
+git diff --cached
+# 工作区和本地仓库比较
+git diff head
+# 工作区和暂存区 filename 文件的对比，可以加路径
+git diff filename
+# 比较当前分支和	`branchName`分支的filename的文件
+git diff <branch> filename 
+# 比较远程主机 romoteName 的branchName 分支的filename文件比较
+git diff <remote/branch> <filename>
+# 比对当前的dev 与 master 两个分支代码的差异
+git diff dev master filename 
+# 输出当前与指定版本的差异文件
+git diff --name-only <branch | commitId |HEAD@{num}>
+```
+
+#### 提交
+
+```js
+# 提交到本地仓库
+git commit -m'描述信息'
+# 提交指定文件，可以是文件目录，多文件用空格隔开
+git commit filename -m '描述信息'
+# 合并提交
+git commit --amend -m '描述信息'
+# 添加到暂存区并提交到本地仓库（不建议使用）
+git commit -a -m '描述信息'
+# 标记提交到节点，记录提交人
+git commit -s（-signoff） -m '描述信息'
+```
+
+#### 日志
+
+```js
+# git log 简化
+git shortlog
+# 列出提交到详细信息
+git log 
+-p # 查看历次的log信息及更改情况
+-p -number # 查看距现在最近的number次的，提交的信息及更改情况
+--stat -number # 查看log显示文件修改情况
+--pretty=oneline # 查看提交的版本ID
+--author="author" # 查看author 提交的记录
+--oneline --graph # 查看分支图
+git show commitid/tag # 查看记录
+git log --oneline ｜ wc -l # 查看一共有多少条提交记录
+```
+
+#### 进阶
+
+​		文章解释说明 `git`  相关的高级功能，包含暂存、分支、合并、回滚等。这些命令是我们日常工作中分支管理、代码管理等重要手段，基本通过这些命令可以解决在开发中遇到的代码冲突、冲突解决、代码回退、紧急 `bug` 修复等。
+
+#### git stash
+
+​		stash命令不是很常用，在工作中一般遇到紧急问题，我们会暂存一下代码，由于暂存的代码容易和本地代码冲突无法强制使用暂存区代码，这是暂存的一个缺陷。当然在我们日常工作中，在暂存状态下尽量不要频繁暂存，容易造成一些问题。下面主要介绍暂存、暂存的取出、暂存的查看、暂存的删除、以及暂存树的调出等。`git stash --help` 查看相关参数。
+
+```js
+git stash # 中断，保持现场。（用编号标记不同的中断）
+
+git stash list # 查看所有的中断信息
+
+git stash clear # 清除所有中断信息
+
+git stash save '描述信息'
+
+git stash show [-p]
+
+git stash show stash@{num} # 查看stash中的修改内容
+
+git stash pop stash@{num} # 从stash中取出并删除stash{num}，默认是最后一条
+
+git stash apply stash@{num} # 取出stash{num}，但不删除stash，默认是最后一条
+
+git fsck [--lost-found] # 查看丢失的stash
+```
+
+#### git branch
+
+​		分支管理相关命令较多，在日常工作操作中也较为频繁，熟练掌握这些命令可以提高代码管理的效率，下面是分支操作的相关命令说明，包含分支的新建、切换、更名、查看等。使用`git branch --help` 查看相关参数。
+
+```js
+# 新建分支
+git branch '分支名' # 创建一个分支
+git checkout -b '分支名' # 创建并切换分支
+'分支名' <remote/branch> # 以远程分支为基础，创建新的本地分支
+
+'分支名' <commitId> # 以某次提交创建新的分支
+
+'分支名' <tagName> # 以 tag 创建新的分支
+
+git checkout --orphan <branch> # 新建纯净分支，不依赖任何分支
+
+# 分支查看
+git branch -l # 查看本地分支
+					 -r # 列出所有分支
+           -a # 远程分支 + 本地分支
+           -v # 查看各分支最后一次提交的版本，[feat/v6.7.16 8351a38 fix 修复分组bug]
+
+# 删除分支
+git branch -d <branch< # 删除分支，未合并分支不能被删除
+           -D <branch> # 强制删除分支
+
+# 切换分支
+git checkout <branch> # 从当前分支切换到 branchName 分支
+git checkout - # 切换到上一分支 类似 cd --
+
+# 更改分支名
+git branch -m <oldBranch> <newBranch> 
+```
+
+
 
