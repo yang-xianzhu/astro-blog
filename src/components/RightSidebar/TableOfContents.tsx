@@ -20,6 +20,7 @@ const TableOfContents: FunctionalComponent<{ headings: MarkdownHeading[] }> = ({
 				id: title.id,
 				topOffset: title.getBoundingClientRect().top + window.scrollY,
 			}));
+			
 		};
 
 		getItemOffsets();

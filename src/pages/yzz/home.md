@@ -1,6 +1,7 @@
 ---
 title: 首页
 description: Docs intro
+# 表示要把md内容放到哪个页面结构里面去
 layout: ../../layouts/MainLayout.astro
 ---
 <!-- <img src="/middle.jpg" alt="头像" > -->
