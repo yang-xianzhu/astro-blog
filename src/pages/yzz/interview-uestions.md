@@ -1788,6 +1788,26 @@ git checkout - # 切换到上一分支 类似 cd --
 # 更改分支名
 git branch -m <oldBranch> <newBranch> 
 ```
+#### Git merge / rebase / cherry-pick
+
+​		代码合并是多人协作开发必要命令，在日常开发中可能每个功能块均有一个或多个开发或者每个人都自己维护一个本地分支。大家为了避免冲突做了很多分支和代码管理上的约束。都是为了降低代码管理的成本。下面主要说明几种不同合并方式，第一是 `merge` 第二是 `rebase` ，第三是 `cherry-pick`。
+
+
+
+#### git merge
+
+```js
+# git merge
+git merge dev # 将 dev 分支合并到当前分支
+git merge origin/dev # 将远程主机origin到dev分支合并到当前分支
+--continue # 有冲突时执行
+--abort # 放弃合并
+--allow-unrelated-histories dev # 合并独立分支代码
+--no-commit  # 使用分支上的最后的提交 commit 信息，否则会出现 Merge branch `test`
+--squash # 压缩所有合并
+```
+
+
 
 
 

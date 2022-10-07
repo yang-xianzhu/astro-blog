@@ -3,11 +3,11 @@ title: 首页
 description: Docs intro
 layout: ../../layouts/MainLayout.astro
 ---
-<img src="/middle.jpg" alt="头像" >
+<!-- <img src="/middle.jpg" alt="头像" > -->
 
-**记录学习**
+## 记录学习
 
-用户记录本人学习 `前端` 相关知识，记录常用的 `工具库` 、常见的 `八股文`、 `源码`等。
+用于记录本人学习 `前端` 相关知识，记录常用的 `工具库` 、常见的 `八股文`、 `源码`等。
 
 ## **学习清单**
 #### 1、`书籍系列`
