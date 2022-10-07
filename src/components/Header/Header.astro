@@ -36,7 +36,11 @@ const lang = getLanguageFromURL(currentPage);
     <div class="search-item">
       <Search client:idle />
     </div>
-    <a class="github-logo" target="_blank" href="https://github.com/yang-xianzhu/blog">
+    <a
+      class="github-logo"
+      target="_blank"
+      href="https://github.com/yang-xianzhu/blog"
+    >
       <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <title>GitHub</title>
         <path
@@ -131,6 +135,14 @@ const lang = getLanguageFromURL(currentPage);
     }
   }
 
+  /* 移动端屏幕下 */
+  @media (max-width: 400px) {
+    header {
+      background-color: var(--theme-divider);
+      height: 60px;
+    }
+  }
+
   /** Style Algolia */
   :root {
     --docsearch-primary-color: var(--theme-accent);
@@ -156,10 +168,10 @@ const lang = getLanguageFromURL(currentPage);
     color: var(--theme-text);
     transition: color 0.5s;
   }
-  
-  .github-logo > svg{
-	fill: currentColor;
-	color: var(--theme-text);
+
+  .github-logo > svg {
+    fill: currentColor;
+    color: var(--theme-text);
   }
 
   @media (min-width: 50em) {

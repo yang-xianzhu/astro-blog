@@ -447,5 +447,13 @@ li{
 
 .main-section h6 {
 	font-size:1rem;
-	color:green;
+	color:#3da742;
+	text-shadow: #6ed273 0px 2px 10px;
 }
+
+  /* 移动端屏幕下 */
+  @media (max-width: 400px) {
+	.main-section .astro-code{
+	margin: 8px 0;
+	}
+  }
