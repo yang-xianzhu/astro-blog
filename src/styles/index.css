@@ -452,7 +452,7 @@ li{
 }
 
   /* 移动端屏幕下 */
-  @media (max-width: 400px) {
+  @media (max-width: 770px) {
 	.main-section .astro-code{
 	margin: 8px 0;
 	}
