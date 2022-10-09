@@ -11,12 +11,13 @@ layout: ../../layouts/MainLayout.astro
 用于记录本人学习 `前端` 相关知识，记录常用的 `工具库` 、常见的 `八股文`、 `源码`等。
 
 ## **学习清单**
-#### 1、`书籍系列`
+#### 1、书籍系列
 - ✅ **红宝书**
 - ❎ **你不知道的JavaScript系列**
-- ❎ **JavaScript数据结构和算法**
-- ❎ **图解http**
-#### 2、`技术`
+- ❎ **JavaScript设计模式**
+- ❎ **学习JavaScript数据结构与算法**
+- ❎ **图解HTTP**
+#### 2、技术
 - ❎ **学习vue3源码：mini-vue**
 - ❎ **TypeScript的进阶使用**
 - ✅ **React**

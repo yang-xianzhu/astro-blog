@@ -119,3 +119,7 @@ for(var i = 0; i< divs.length;i++){
 ## 你不知道的JavaScript系列-中卷
 
 ## 你不知道的JavaScript系列-下卷
+
+## JavaScript设计模式
+
+## 学习JavaScript数据结构与算法
