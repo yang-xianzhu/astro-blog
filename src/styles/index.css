@@ -273,6 +273,7 @@ th {
 }
 
 pre {
+	border-radius: 8px;
 	background-color: var(--theme-code-bg);
 	color: var(--theme-code-text);
 }
@@ -284,7 +285,6 @@ blockquote code {
 @media (min-width: 37.75em) {
 	pre {
 		--padding-inline: 1.25rem;
-		border-radius: 8px;
 		margin-left: 0;
 		margin-right: 0;
 	}

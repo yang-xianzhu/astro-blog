@@ -1893,5 +1893,72 @@ git checkout -b branchName tagName # 以 tag_name 创建一个分支 branch_name
 git push origin : refs/tags/tagName # 删除远程分支 tag
 ```
 
+- ###### 远程仓库
+
+```sh
+# 克隆
+git clone <url> # 克隆仓库代码
+git clone <url> <dir> # 将代码 clone 到 dir目录，不在使用默认目录
+git clone -b <branch> --single--branch <url> # 克隆单一分支代码
+git clone -b <branch> <url>
+
+# 查看
+git remote # 查看所有的主机名
+git remote -v # 查看所有的远程仓库地址(name + url)
+git remote show <remote> # 查看指定远程版本库信息
+
+# 添加
+git remote add <remote> <url> # 添加远程版本库（添加一个远程的仓库，在指定的url上）
+
+# 修改
+git remote set-url <remote> <newUrl> # 修改主机地址
+
+# 删除
+git push origin --delete <branch>
+git remote rm <remote> # 删除远程仓库
+
+# 上传
+git push origin <本地分支>:<远程分支> # 上传代码到远程仓库，如果是本地名，则删除远程分支
+-f # 强制上传
+git push --set-upstream origin branchName # 新建 branchName 远程分支，当前分支与远程分支关联
+git push -u origin master # --set-upstream 简写
+
+# 下载
+git fetch <origin> # 拉代码，需要手动合并代码
+git pull <origin><remote/branch>:<branch>
+```
+
+- ###### 操作记录
+
+```sh
+git reflog # 查看所有的本地操作记录
+git log --graph --oneline --decorate $(git fsck --no-reflog | awk '/dangling comm/{print $3}') # 调出 全部记录的树
+
+git reflog show <branch> # 列出指定分支的版本记录列表
+git reflog show --date=iso <branch> # 查看分支创建的时间
+
+git show <commitId> # 查看 commitId 信息
+git show --stat <commitId> # 查看 commitId 修改文件信息
+```
+
+- ###### 打包‘
+
+```sh
+git archive --format=zip --o master.zip master. # 用zip方式打包master分支代码
+--format=zip --o v1.2.zip v1.2 # 打包v1.2版本
+--format=zip --o update.zip HEAD ${git diff --name--only HEAD^} # 打包更新的内容文件
+--format=zip --o update.zip HEAD ${git diff --name--only HEAD~2} # 打包最后两个版本修改的文件
+--format=zip --o update.zip HEAD ${git diff --name--only master fix-error} # 打包两个分支差异的文件
+```
+
+- ###### 其他
+
+```sh
+git checkout <branch> --filename : # 将 dev 分支的 filename 检出到当前分支
+git command --help # 查看命令详情 command命令
+```
+
+
+
 
 
