@@ -293,10 +293,14 @@ blockquote code {
 blockquote {
 	margin: 2rem 0;
 	padding: 1.25em 1.5rem;
-	border-left: 3px solid var(--theme-text-light);
+	border-left: 3px solid var(--theme-blockquote-borderLeft);
 	background-color: var(--theme-bg-offset);
 	border-radius: 0 0.25rem 0.25rem 0;
 	line-height: 1.7;
+
+	/* color: rgb(106, 115, 125);
+    border-left-color: rgb(216, 156, 246);
+    background: rgb(244, 238, 255); */
 }
 
 img {

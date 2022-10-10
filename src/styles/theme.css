@@ -68,7 +68,7 @@
 	--theme-text-lighter: hsla(var(--color-gray-80), 1);
 	--theme-bg: hsla(var(--color-base-white), 100%, 1);
 	--theme-bg-hover: hsla(var(--color-gray-95), 1);
-	--theme-bg-offset: hsla(var(--color-gray-90), 1);
+	--theme-bg-offset: rgb(244, 238, 255);;
 	--theme-bg-accent: hsla(var(--color-blue), var(--theme-accent-opacity));
 	--theme-code-inline-bg: hsla(var(--color-gray-95), 1);
 	--theme-code-inline-text: var(--theme-text);
@@ -78,6 +78,7 @@
 	--theme-navbar-height: 6rem;
 	--theme-selection-color: hsla(var(--color-blue), 1);
 	--theme-selection-bg: hsla(var(--color-blue), var(--theme-accent-opacity));
+	--theme-blockquote-borderLeft:rgb(216, 156, 246);
 }
 
 body {
@@ -117,6 +118,8 @@ body {
 	--docsearch-hit-color: var(--theme-text);
 	--docsearch-footer-shadow: inset 0 2px 10px #000;
 	--docsearch-modal-shadow: inset 0 0 8px #000;
+	/* 引用的左边框颜色 */
+	--theme-blockquote-borderLeft:#eee;
 }
 
 ::selection {
