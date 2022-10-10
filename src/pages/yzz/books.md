@@ -114,6 +114,22 @@ for(var i = 0; i< divs.length;i++){
 
 - 简介：Fetch API能够执行 XMLHttpRequest 对象的所有任务，但更容易使用，接口也更现代化，能够在Web工作线程等现代Web工具中使用。XMLHttpRequest可以选择异步，而Fetch API则必须是异步。Fetch API 本身是使用javascript请求资源等优秀工具，同时这个API也能够应用在服务线程（service worker） 中，提供拦截、重定向和修改通过fetch（）生成的请求接口。
 
+###### Beacon API
+
+- 简介：为了把尽量多的页面信息传到服务器，很多分析工具需要在页面生命周期中尽量晚的时候向服务器发送遥测或分析数据。因此，理想情况下是通过浏览器的 `unload` 事件发送网络请求。
+
+> 在unload事件处理程序中创建的任何的异步请求都会被浏览器取消。
+
+###### Web Socket
+
+- 简介：
+
+  ​Web Socket（套接字）的目标是通过一个长时连接实现与服务器 `全双工` 、`双向` 的通信。javacript中创建Web Socket时，一个HTTP请求会发送到服务器以初始化连接。
+
+  ​因为Web Socket使用了自定义协议，所以URL方案（scheme）稍有变化：不能再使用 `http://` 或 `https://`，而要使用 `ws://` 或 `wss://`。前者是不安全的连接，后者是安全连接。 
+
+  ​使用自定义协议而非HTTP协议的好处是，客户端与服务端之间可以发送非常少的数据，不会对HTTP造成任何负担。使用更少的数据包让 Web Socket 非常适合**带宽**和**延迟**问题比较明显的移动应用。使用自定义协议的缺点是，定义协议的时间比定义Java script API要长。
+
 ## 你不知道的JavaScript系列-上卷
 
 ## 你不知道的JavaScript系列-中卷

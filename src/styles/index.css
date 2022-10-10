@@ -455,6 +455,11 @@ li{
 	text-shadow: #6ed273 0px 2px 10px;
 }
 
+.main-section strong {
+	padding:0 0.2rem;
+	color: rgb(145, 109, 213);
+}
+
   /* 移动端屏幕下 */
   @media (max-width: 770px) {
 	.main-section .astro-code{
