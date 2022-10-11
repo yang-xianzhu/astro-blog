@@ -455,9 +455,13 @@ li{
 	text-shadow: #6ed273 0px 2px 10px;
 }
 
-.main-section strong {
+.main-section p>strong {
 	padding:0 0.2rem;
 	color: rgb(145, 109, 213);
+}
+
+.main-section p{
+	line-height: 26px;
 }
 
   /* 移动端屏幕下 */
