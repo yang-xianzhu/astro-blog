@@ -130,6 +130,64 @@ for(var i = 0; i< divs.length;i++){
 
   ​使用自定义协议而非HTTP协议的好处是，客户端与服务端之间可以发送非常少的数据，不会对HTTP造成任何负担。使用更少的数据包让 Web Socket 非常适合**带宽**和**延迟**问题比较明显的移动应用。使用自定义协议的缺点是，定义协议的时间比定义Java script API要长。
 
+- API
+
+​		要创建一个Web Socket，就要实例化一个 `WebSocket`  对象并传入提供连接的URL：
+
+```js
+const socket = new WebSocket('绝对路径的url地址');
+```
+
+​		注意，必须给WebSocket构造函数传入一个绝对URL。同源策略不适用于Web Socket，因此可以打开到任意站点的连接。至于是否与来自特定源的页面通信，则完全取决于服务器。（在**握手**阶段就可以确定请求来自哪里）
+
+​		WebSocket.OPENING(0)：连接正在建立。
+
+​		WebSocket.OPEN(1)：连接已经建立。
+
+​		WebSocket.CLOSING(2)：连接正在关闭。
+
+​		WebSocket.CLOSE(3)：连接已关闭。
+
+> 任何时候都可以调用close()方法关闭WebSocket的连接。
+>
+> socket.close()
+
+- 发送和接收数据
+
+​		服务器向客户端发送消息时，WebSocket对象上会触发**message**事件。
+
+```js
+socket.onmessage = function (event) {
+  const data = event.data
+}
+```
+
+- 其他事件
+
+> WebSocket对象不支持DOM Level2事件侦听器，因此需要使用DOM Level0风格的事件处理程序来侦听这些事件。
+
+```js
+const socket = new WebSocket('url')
+
+socket.onopen = function (){
+  ...
+}
+ 
+socket.onerror = function (){
+  ...
+}
+  
+socket.onclose = function (){
+  ...
+}
+```
+
+在这些事件中只有**close**事件的event对象有额外信息。这个对象有三个属性：
+
+- wasClean：是一个布尔值，表示连接是否干净地关闭；
+- code：是一个来自服务器的数值状态码；
+- reason：是一个字符串，包含服务器发来的信息。
+
 ## 你不知道的JavaScript系列-上卷
 
 ## 你不知道的JavaScript系列-中卷
