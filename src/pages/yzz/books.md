@@ -188,6 +188,121 @@ socket.onclose = function (){
 - code：是一个来自服务器的数值状态码；
 - reason：是一个字符串，包含服务器发来的信息。
 
+###### 安全
+
+​		在未授权系统可以访问某个资源时，可以将其视为**跨站点请求伪造**（CORF）攻击。未授权系统会按照处理请求的服务器的要求伪装自己。Ajax应用程序，无论大小，都会受到CSRF攻击的影响，包括无害的漏洞验证攻击和恶意的数据盗窃或数据破坏攻击。
+
+​		关于安全防护Ajax相关URL的一般理论认为，需要验证请求发送者拥有对资源的访问权限，可以通过一下方式实现：
+
+- 要求通过SSL访问能够被Ajax访问的资源。
+- 要求每个请求都发送一个按约定算法计算好的令牌（token）。
+
+​	注意：以下手段对防护CSRF攻击是无效的。
+
+- 要求POST而非GET请求（很容易修改请求方式）
+- 使用来源URL验证来源（来源URL很容易被修改）
+- 基于cookie验证（同样很容易被伪造）
+
+​	
+
+###### 小结
+
+- XHR的一个主要限制是同源策略，即通信只能在**相同域名**、**相同端口**、**相同协议**的前提下完成。
+- 图片探测和JSONP是另外两种跨域通信技术，但没有CORS那么可靠。
+- Fetch API是作为对XHR对象的一种端到端的替代方案而提出的。这个API提供了优秀基于期约（promise）的结构、更直观的接口，以及对 Stream API的最好支持。
+
+#### 客户端存储
+
+1. ###### cookie：
+
+​		HTTP cookie 通常也叫做cookie。最初用于在客户端存储会话信息。这个规范要求服务器在响应HTTP请求时，通过发送Set-CookieHTTP头部包含会话信息。
+
+​		浏览器会存储这些会话信息，并在之后的每次请求都会通过HTTP头部cookie再将它们吗发回服务器。
+
+- 限制
+
+​		cookie是与特定域绑定的。设置cookie后，它会与请求一起发送到创建它的域。这个限制能保证cookie中存储的信息只对被认可的接收者开放，不被其他域访问。
+
+​		因为cookie存储在客户端机器上，所以为了保证它不会被恶意使用，浏览器会施加限制。，同时cookie也不会占用太多磁盘空间。
+
+通常，只要遵守以下大致的限制，就不会在任何浏览器碰到问题。
+
+- 不超过**300**个cookie；
+- 每个cookie 不超过**4096**字节；
+- 每个域不超过**20**个cookie；
+- 每个域不超过**81920**字节；
+
+每个域能设置的cookie总数也是受限的，但不同浏览器的限制不同。
+
+- 最新版IE和Edge限制每个域不超过**50**个cookie；
+- 最新版Firefox限制每个域不超过**150**个cookie；
+- 最新版Opera限制每个域不超过**180**个cookie；
+- Safari和Chrome对每个域的cookie数没有硬性控制；
+
+> 注意：
+>
+> 这个大小限制适用于一个域的所有cookie，而不是单个cookie。
+>
+> 如果创建的cookie超过最大限制，则该cookie会被静默删除。
+
+- 使用cookie的注意事项
+
+​		因为所有cookie都会作为请求头部由浏览器发送给服务器，所以在cookie中保存大量信息可能会影响特定域浏览器请求的性能。保存的cookie越大，请求完成的时间就会越长。既使浏览器对cookie大小有限制，最好还是尽可能值通过cookie保存必要信息，以避免性能问题。
+
+2. Web Storage
+
+​		Web Storage 最早是网页超文本应用技术工作组在 Web Applications1.0规范中提出的。Web Storage的目的是解决通过客户端存储不需要频繁发送回服务器的数据时使用cookie的问题。
+
+​		Web Storage规范有两个目标：
+
+- 提供在cookie之外的存储会话数据的途径。
+- 提供跨会话持久化存储大量数据的机制。
+
+​		Web Storage 的localStorage 和 sessionStorage。localStorage是永久存储机制，sessionStorage 是跨会话的存储机制。
+
+> 注意：Web Storage 第一版曾使用过 globalStorage，不过目前globalStorage已废弃了。
+
+​		所有现代浏览器在实现存储写入时都使用了**同步阻塞**方式，因此数据会被立即提交到存储中。具体API到实现可能不会立即把数据写入磁盘（而是使用某种不同物理存储），但这个区别在JavaScript层面是不可见的。通过Web Storage写入的任何数据都可以立即被读取。
+
+​		老版本的IE以异步方式实现的数据写入，因此给数据赋值的时间和数据写入磁盘的时间可能存在延迟。
+
+- 存储事件
+
+每当Storage对象发生变化时，都会在文档上触发**storage**事件。使用属性或者setItem（）设置值，使用delete或removeItem（）删除值，以及每次调用clear（）时都会触发这个事件。
+
+1. domain：存储变化对应的域。
+2. key：被设置或删除的键。
+3. newValue：键被设置的新值，若键被删除则为null。
+4. oldValue：键变化之前的值。
+
+```js
+window.addEventListener('storage', (event)=>{
+  // ...
+})
+```
+
+对于sessionStorage 和 localStorage 上的任何更改都会触发 storage 事件，但storage事件不会区分这两者。
+
+- 限制
+
+不同浏览器给 localStorage 和 sessionStorage 设置了不同的空间限制，但大多数会限制每个源5MB。
+
+3. IndexedDB
+
+Indexed Database API简称**IndexedDB**，是浏览器中存储结构化数据的一个方案。
+
+IndexedDB的设计几乎完全是**异步**的。
+
+- 数据库
+
+与传统数据库最大的区别在于，IndexedDB使用对象存储而不是表格保存数据。
+
+4. 限制
+
+IndexedDB数据库是与页面源（协议、域名、端口号）绑定的，因此信息不能跨域共享。
+
+
+
 ## 你不知道的JavaScript系列-上卷
 
 ## 你不知道的JavaScript系列-中卷
