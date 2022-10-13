@@ -48,13 +48,13 @@ export type Sidebar = Record<
 export const SIDEBAR: Sidebar = {
 	en: {
 		'': [
-			{ text: '首页', link: 'yzz/home' },
-			{ text: '面试题', link: 'yzz/interview-uestions' },
-			{ text: '源码', link: 'yzz/source-code' },
-			{ text: '算法', link: 'yzz/algorithm' },
-			{ text: '书籍', link: 'yzz/books' },
-			{ text: '工具库', link: 'yzz/tool-library' },
-			{ text: '工程化', link: 'yzz/engineering' },
+			{ text: '首页', link: 'blog/home' },
+			{ text: '面试题', link: 'blog/interview-uestions' },
+			{ text: '源码', link: 'blog/source-code' },
+			{ text: '算法', link: 'blog/algorithm' },
+			{ text: '书籍', link: 'blog/books' },
+			{ text: '工具库', link: 'blog/tool-library' },
+			{ text: '工程化', link: 'blog/engineering' },
 		],
 		// 'Another Section': [{ text: 'Page 4', link: 'en/page-4' }],
 	},
