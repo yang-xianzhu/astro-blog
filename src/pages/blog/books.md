@@ -936,7 +936,7 @@ for(var i=0;i<6;i++){
 }
 ```
 
-这里确实是利用了setTimeout函数的第三个参数，每次for迭代的时候都给setTimeout传递一个当前的i的值。
+这里其实是利用了setTimeout函数的第三个参数，每次for迭代的时候都给setTimeout传递一个当前的i的值。
 
 - 方式二：
 
