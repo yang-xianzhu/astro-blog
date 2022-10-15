@@ -431,6 +431,24 @@ li{
     border-left: 5px solid #916dd5;
 }
 
+.main-section h3{
+	position: relative;
+	font-size: 1.2rem;
+	text-align: center;
+	padding-bottom:10px;
+}
+
+.main-section h3::after{
+	content: '';
+	position:absolute;
+	bottom:0;
+	left:50%;
+	width: 15%;
+	height: 2px;
+	transform: translateX(-50%);
+	background-color: #916dd5;
+}
+
 .main-section h4{
 	position: relative;
 	padding-left: 2.6rem;
