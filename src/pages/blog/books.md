@@ -575,7 +575,7 @@ const num =0,
 - 调用**getElementsByTagName()**
 - 读取元素的**chidNodes**属性
 - 读取元素的**attributes**属性
-- 调用特殊的集合，如**document.form**、**document.images等
+- 调用特殊的集合，如**document.form**、**document.images**等
 
 
 ## 你不知道的JavaScript系列-上卷
