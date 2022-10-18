@@ -1410,6 +1410,169 @@ obj2.obj1.foo() // 42
 
 调用回调函数的函数可能会修改this。在一些流行JavaScript库中事件处理器常会把回调函数的this强制绑定到触发事件的DOM元素上。
 
+##### 2.2.3 显式绑定
+
+JavaScript提供的绝大多数函数以及我们自己创建的所有函数都可以使用call(...)、apply(...)方法。
+
+它们的第一个参数是一个对象，是给this准备的，接着在调用函数时将其绑定到this。因为你可以直接指定this到绑定对象，因此我们称之为**显式绑定**。
+
+**如果你传入了一个原始值（字符串类型、布尔类型或者数字类型）来当作this到绑定对象，这个原始值会被转换成它的对象形式（也就是new String(...))、new Boolean(...)，通常被称为“装箱”。--包装类型**
+
+##### 2.2.4 new绑定
+
+在JavaScript中，构造函数只是一些使用new操作符时被调用的函数。它们并不会属于某个类，也不会实例化一个类。实际上，它们甚至都不能说是一种特殊的函数类型，**它们只是被new操作符调用的普通函数而已**。
+
+实际上不存在所谓的**构造函数**，只有对于函数的**构造调用**。
+
+使用new来调用函数，或者说发生构造函数调用时，会做那些事：
+
+1. 创建（或者说构造）一个全新的对象。
+2. 这个对象会执行[[prototype]]连接。 （将属性和方法添加到这个新对象里）
+3. 这个新对象会绑定到函数调用的this。
+4. **如果函数没有返回其他对象，那么new表达式中的函数调用就会自动返回这个新对象。**
+
+new说最后一种可以影响函数调用时this绑定行为的方法，我们称之为**new绑定**。
+
+#### 2.3 优先级
+
+**显性绑定 > new绑定 > 隐式绑定**
+
+Function.prototype.bind(...)会创建一个新的包装函数，这个函数会忽略它当前的this绑定（无论绑定的对象是什么），并把我们提供的对象绑定到this上。
+
+手写一个简易版本的bind:
+
+```js
+Function.prototype.bind = function(oThis){
+  if(typeof this !=='function'){
+    throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable')
+  }
+  let aArgs = Array.prototype.slice.call(argument,1),
+      fToBind =this,
+      fNOP = function (){
+        return fToBind.apply(
+       ( this instanceof fNOP &&
+        oThis ? this : oThis),
+          aArgs.concat(
+          Array.prototype.slice.call(arguments)
+          )
+        )
+      }
+  fNOP.prototype = this.prototype
+  fBound.prototype = new fNOP()
+  return fBound
+}
+```
+
+我们重点放到这一段代码上：
+
+```js
+this instanceof fNOP &&
+oThis ? this : oThis
+// 以及
+fNOP.prototype = this.prototype
+fBound.prototype = new fNOP()
+```
+
+这段代码会判断硬绑定函数是否是被new调用，如果是的话就会使用新创建的this替换掉硬绑定的this。
+
+之所以要在new中使用硬绑定函数，主要目的是预先设置函数的一些参数，这样在使用new进行初始化时就可以只传入其他参数。bind( ... ) 的功能之一就是**可以把除了第一个参数（第一个参数用于绑定this）之外的其他参数都传给下层的函数（这种技术称为"部分应用"，是柯里化的一种）**。
+
+```js
+function foo(p1,p2){
+ this.val = p1 + p2
+}
+
+const bar = foo.bind('p1')
+const baz = new bar('p2')
+baz.val  // p1p2
+```
+
+###### 判断this
+
+1. 函数是否在new中调用（new绑定）？如果是的话this绑定的是新创建的对象。
+
+```js
+const bar = new foo()
+```
+
+2. 函数是否在call、apply（显式绑定）或者硬绑定调用？如果是的话，this绑定的是指定的对象。
+
+```js
+const bar = foo.call(obj)
+```
+
+3. 函数是否在某个上下文对象中调用（隐式绑定）？如果是的话，this绑定的是那个上下文对象。
+
+```js
+const bar = obj1.foo()
+```
+
+4. 如果都不是的话，使用默认绑定。如果在严格模式下，就绑定在undefined，否则绑定到全局对象。
+
+```js
+const bat = foo()
+```
+
+#### 2.4 绑定例外
+
+##### 2.4.1 被忽略的this
+
+**如果你把null或者undefined作为this的绑定对象传给call、apply或者bind，这些值会被调用时被忽略，实际应用的是默认绑定规则。**
+
+```js
+function foo(){
+  console.log( this.a )
+}
+let a = 2
+foo.call(null) // 2
+```
+
+什么情况会传入null？
+
+1. 使用apply来**展开**数组。（在ES6之前，ES6之后可以使用`...`展开运算符）
+2. 使用bind可以对参数进行柯里化。（预先设置一些参数）
+
+```js
+function foo(){
+  console.log('a:'+ a + 'b:' + b)
+}
+const bar = foo.call(null,1)
+bar(2)  // a:1 b:2
+```
+
+> 在ES6之前没有柯里化的相关语法，因此还需要使用bind( ... )。
+
+然而，总是使用null来忽略this绑定可能会产生一些副作用。如果某个函数确实使用了this（比如第三方库中的一个函数），那默认绑定规则会把this绑定到全局对象，这将导致不可预计的后果（比如修改全局对象）。
+
+##### 更安全的this
+
+一种更安全的做法是传入一个特殊的对象。在JavaScript中创建一个空对象最简单的方法都是**Object.create(null)**和**{}**很像，但是**Object.create并不会创建Object.prototype委托**，所以它比{}更空。
+
+##### 2.4.2 间接引用
+
+间接引用最容易在赋值时发生：
+
+```js
+function foo(){
+  console.log( this.a )
+}
+let a = 2
+let obj = {
+  a:3,
+  foo:foo
+}
+let p = {
+  a:99
+}
+obj.foo() // 3
+(p.foo = obj.foo)() // 99
+```
+
+赋值表达式p.foo = obj.foo的返回值是目标函数的引用，因此调用位置是foo()而不是p.foo()或者obj.foo()。
+
+> 注意：对于默认绑定来说，决定this绑定对象的并不是**调用位置**是否处于严格模式，而是函数体是否处于严格模式。如果函数体处于严格模式，this会被绑定到undefined，否则this绑定到全局对象。
+
+##### 2.4.3 软绑定。
 
 ## 你不知道的JavaScript系列-中卷
 
