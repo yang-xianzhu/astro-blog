@@ -1616,6 +1616,114 @@ foo.call(obj) // 2
 
 箭头函数会继承**外层函数调用**的this绑定（无论this绑定到什么）。这其实和ES6之前代码的**_this = this**机制一样。
 
+### 对象
+
+#### 3.1 语法
+
+对象可以通过两种形式定义，声明(文字)形式(字面量声明)和构造形式。
+
+对象的文字语法：
+
+```js
+const obj = {
+  key:value
+}
+```
+
+构造形式：
+
+```js
+const obj = new Object()
+obj.key = value 
+```
+
+构造形式和文字形式生成的对象是一样。唯一的区别就是，在文字声明中你可以添加多个键值对，但是在构造形式呢必须逐个逐个添加属性。
+
+#### 3.2 类型
+
+在JavaScript中一共有**八种**数据类型。（包含ES6）
+
+- string
+- number
+- boolean
+- null
+- undefined
+- bigInt
+- Symbol
+
+> 注意：null有时候会被当作一种对象类型，但是这其实只是语言本身的一个bug，既对null执行**typeof null**会返回字符串object。实际上，**null本身是基本类型**。
+>
+> 原理：不同的对象在底层都表示为二进制，在JavaScript中二进制前三位都为0的话会被判断为object，null的二进制表示全是0，自然前三位也是0，所以会被判断为object类型。
+
+```js
+let str = 'I am Xianzhu-Yang'
+tyoeof str ==> string
+str instanceof String. // false
+
+let strObject = new String('I am stringObj')
+typeof strObject ==> object
+strObject instanceof String. // true
+```
+
+原始值"I am Xianzhu-Yang"并不是一个对象，它只是一个字面量，并且是一个不可边的值，如果要在这个字面量上执行一些操作，比如**获取长度**、**访问其中**某个字符串等，那需要将其转换为String对象。
+
+幸运的是，在必要时语言会自动把字符串字面量转换成一个string对象，也就是说呢并不需要显式创建对象。**引擎会自动把字面量转换为String对象，所以可以访问属性和方法。**
+
+null和undefined没有对应的构造形式，它们只有字面形式。相反，Date只有构造形式，没有文字形式。
+
+对于Object、Array、Function和RegExp（正则）来说，无论使用文字或构造形式，它们都是对象，不是字面量。在某些情况下， 相比用文字形式创建对象，构造形式可以提供一些额外选项。由于这两种形式都可以创建对象，所以我们首选更简单的文字形式。建议只在需要哪些额外选项时才使用构造形式。
+
+Error对象很少在代码中显示创建，一般是在抛出异常时被自动创建。也可以使用new Error(...)这种构造形式来创建，不过一般用不着。
+
+#### 3.3 内容
+
+对象内容是由一些存储在特定命名为主的（任意类型的）值组成的，我们称之为属性。
+
+**存储在对象容器内部的是这些属性的名称，它们都被称为指针（从技术角度来说是引用）一样，指向这些值真正的存储位置。**
+
+访问对象属性可以分为两种方式：属性访问、键访问。
+
+这两种语法的主要区别：
+
+- 操作符要求属性名必须满足标识符的命名规范。
+- 键访问语法可以接受任意UTF-8Unicode字符串作为属性名。举例来说，如果要引用名称为了**xian-zhu**这个属性名，就必须使用键访问。
+
+在对象中，**属性名永远都是字符串***。如果你使用string字面量以为的其他值作为属性名，那它首先会被转换为一个字符串。即使是数字也不例外，虽然在数组中下标使用的的确是数字，但是在对象属性名中会转换为字符串。
+
+##### 3.3.1 属性和方法
+
+确实，有些函数具有this引用，有时候这些this确实会指向调用位置的对象引用。但是这种用法从本质上来说并没有把一个函数变成一个方法，因为this上在运行时根据调用位置动态绑定的，所以函数和对象的关系最多也只能说上间接关系。
+
+##### 3.3.2 数组
+
+数组和对象都是根据其对应的行为和用途进行优化的，所以最好只用对象来存储**键值对**，用数组存储数值下标。
+
+#### 3.3.3 复制对象
+
+思考一下这个对象：
+
+```js
+function anotherFunction(){}
+const anotherObject = {
+  a:true
+}
+
+cosnt anotherArray = []
+
+const myObject = {
+  a:2,
+  b:anotherObject,
+  c:anotherArray,
+  d:anotherFunction
+}
+
+anotherArray.push(anotherObject,myObject)
+```
+
+如何准确的表示myObject的复制。
+
+对于浅拷贝来说，复制出的是新对象中a的值会是旧对象a的值，也就是2，简单类型就是值的传递。但是新对象中的b、c、d三个属性其实只是三个引用，它们和旧对象引用是一样的。对于深拷贝来说，除了复制myObject以外还会复制anotherArray。这时问题就来了，anotherArray引用了antherObject和myObject，所以又需要复制myObject，这样就会由于**循环引用**导致死循环。
+
 ## 你不知道的JavaScript系列-中卷
 
 ## 你不知道的JavaScript系列-下卷
