@@ -1724,6 +1724,123 @@ anotherArray.push(anotherObject,myObject)
 
 对于浅拷贝来说，复制出的是新对象中a的值会是旧对象a的值，也就是2，简单类型就是值的传递。但是新对象中的b、c、d三个属性其实只是三个引用，它们和旧对象引用是一样的。对于深拷贝来说，除了复制myObject以外还会复制anotherArray。这时问题就来了，anotherArray引用了antherObject和myObject，所以又需要复制myObject，这样就会由于**循环引用**导致死循环。
 
+##### 3.3.3 复制对象
+
+思考一下这个对象：
+
+```js
+function anotherFunction(){}
+const anotherObject = {
+  a:true
+}
+
+cosnt anotherArray = []
+
+const myObject = {
+  a:2,
+  b:anotherObject,
+  c:anotherArray,
+  d:anotherFunction
+}
+
+anotherArray.push(anotherObject,myObject)
+```
+
+如何准确的表示myObject的复制。
+
+对于浅拷贝来说，复制出的是新对象中a的值会是旧对象a的值，也就是2，简单类型就是值的传递。但是新对象中的b、c、d三个属性其实只是三个引用，它们和旧对象引用是一样的。对于深拷贝来说，除了复制myObject以外还会复制anotherArray。这时问题就来了，anotherArray引用了antherObject和myObject，所以又需要复制myObject，这样就会由于**循环引用**导致死循环。
+
+有些人通过toString()来序列化一个函数的源代码(但是结果取决于JavaScript引擎的具体实现，而且不同的引擎对于不同类型的函数处理方式不完全相同)。
+
+```js
+// 深拷贝的一种方式
+const newObj = JSON.parse(JSON.stringify(target))
+```
+
+> 注意：JSON实现深拷贝，如果要拷贝的目标对象里有Date时间对象会把时间对象转换成字符串，如果有函数会被遗漏掉，如果是undefined的值也会被忽略掉。
+
+相比深拷贝，浅拷贝的问题就少得多了，在ES6定了Object.assing(目标对象，要拷贝的对象，要拷贝的对象)，它会遍历一个或多个源对象（要拷贝的对象）的所有**可枚举**的**自有键**，并把它们复制（使用=操作符赋值）到目标对象，最后返回目标对象。
+
+> 由于Object.assgin(...)就是使用=操作符来赋值，所以以源对象属性的一些特性（比如writable）不会被复制到目标对象。
+
+##### 3.3.5 属性描述符
+
+从ES5开始，所有的属性都具备了**属性描述符**。
+
+1. writable
+
+writable决定是否可以修改属性的值。
+
+```js
+const obj ={}
+Object.defineProperty(obj,'a',{
+  value:2,
+  writalbe:falas, // 不可修改
+  configurable:true, // 是否可配置
+  enumerable:true. // 是否可枚举
+})
+obj.a = 3
+console.log(obj.a) // 2
+```
+
+对于设置了writable的属性，修改它会**静默失败**，如果在严格模式下会报错。
+
+2. configurable
+
+只要属性是可配置的，就可以使用defineProperty(...)方法来修改属性描述符。
+
+> 不管是不是处于严格模式，尝试修改一个不可配置的属性描述符都会出错。即便属性是configurable:false，我们还是可以把writable的状态由true改为false，但是无法从false改成true。除了无法修改，configurable:false还会禁止删除这个属性。
+
+delte只用来直接删除对下那个的(可删除)属性。如果对象的某个属性是某个对象/函数的最后引用者，对这个属性执行delete操作之后，这个未引用的对象/函数就可以被垃圾回收了。但是，不要把delte看作一个释放内存的工具(就像C/C++中)，它就是一个删除对象属性的操作，仅此而已。
+
+3. enumerable
+
+这个描述符控制的是属性是否会出现在对象的属性枚举中，比如说**for...in**循环。如果把enumerable设置为false，这个属性就不会出现在枚举中，虽然仍然可以正常访问它。相对的，设置成true就会让它出现在枚举中。
+
+3.3.6 不变性
+
+所有的方法创建的是浅不变性，也就是说，它们只会影响目标对象和它的直接属性。如果目标对象引用了其他对象(数组/对象/函数等)，其他对象的内容不受影响，仍然是可变的。
+
+> 在JavaScript程序中很少需要深不变性。有些特殊情况可能需要这样做，但是根据通用的设计模式，如果你发现需要密封或者冻结所有对象，那我们或许应当退一步，思考一下程序的设计，让它能更好地应对对对象值的改变。
+
+1. 对象常量
+
+```js
+const myObj = {}
+Object.defineProperty(myObj,'name',{
+  value:'yxz',
+  writable:false,
+  configurable:false
+})
+```
+
+2. 禁止扩展
+
+如果你想禁止一个对象添加新属性并且保留已有属性，可以使用Object.preventExtensions(...)
+
+```js
+const myObject ={
+  a:2
+}
+Object.preventExtensions(myObject)
+myObject.a = 9
+console.log(myObject.a) // 2
+```
+
+非严格模式下，会静默失败，否则会报错。
+
+3. 密封
+
+Object.seal(...)会创建一个"密封"的对象，这个方法实际上会在一个现有对象上调用Object.preventExtensions(...)并把所有现有的属性标记为configurable:false。
+
+所以密封后的对象不仅不能添加新属性，也不能重新配置或者删除任何现有的属性（虽然可修改它的值）。
+
+4. 冻结
+
+Object.freeze(...)会创建一个冻结对象，这个方法实际上会在一个现有对象上调用Object.seal(...)并把所有**数据访问**属性标记为writable：false，这样就无法修改它们的值。
+
+你可以深度冻结一个对象，具体方法为：首先在这个对象上调用Object.freeze(...)，然后遍历它引用的对象并把这些对象上调用Object.freeze(...)，但是一定要小心，因为这样做，有可能会冻结到其他需要**共享的对象**。
+
 ## 你不知道的JavaScript系列-中卷
 
 ## 你不知道的JavaScript系列-下卷
