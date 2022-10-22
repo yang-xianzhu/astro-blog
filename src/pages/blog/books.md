@@ -2005,6 +2005,156 @@ for...of循环每次调用obj迭代器对象的next方法时，内部的指针�
 
 类理论强烈建议父类和子类使用相同的方法名来表示特定的行为。从而让子类重写父类的行为。
 
+### 原型
+
+#### [[prototype]]
+
+JavaScript中的对象有一个特殊的内置属性，其实就是对于其他对象的引用。几乎的对象在创建时[[prototype]]属性都会被赋予一个非空的值。
+
+思考以下代码：
+
+```js
+const myObject ={
+  a:2
+}
+myObject.a // 2
+```
+
+[[prototype]]有什么用？当你试图引用对象的属性时会触发[[Get]]操作，比如myObject.a。对于默认的[[Get]]操作来说，第一步是检查对象本身是否有这个属性，如果有就使用它。但是如果没有，就需要使用对象的[[Prototype]]链了。
+
+```js
+const myObject ={
+  a:2
+}
+const newObject = Object.create(myObject)
+newObject.a // 2
+```
+
+这里实际是查找了newObject的prototype链查找到的a，因为现在newObject对象的[[prototype]]**关联**到myObject。
+
+使用for...in遍历对象时原理和查找[[prototype]]链类似，任何可以通过原型链访问到(并且enumberble:true)的属性都会被枚举。使用in操作符来检查属性在对象中是否存在时，同样会查找对象的整条原型链**(无论属性是否可枚举)**。
+
+#### Object.prototype
+
+所有普通的[[prototype]]链最终都会指向内置的Object.prototype。
+
+#### 属性设置和屏蔽
+
+```js
+const myObject ={}
+myObject.name ='yxz'
+```
+
+- 如果myObject对象中包含名为name的普通数据访问属性，这条赋值语句只会修改已有的属性值。
+
+- 如果name不是直接存在于myObject中，[[prototype]]链就会被遍历，类似[[Get]]操作。如果原型链上找不到foo，foo就会被直接添加到myObject上。
+
+- 如果属性为name即出现在myObject中也出现在[[prototype]]链上层，那么就会发生屏蔽。**myObject中包含的name属性会屏蔽原型链上层的所有name属性，因为myObject.name总是会选择原型链最底层的name属性。**
+
+具体myObject.name ='yxz'会出现三种情况。
+
+1. 如果在[[prototype]]链上层存在名为name的普通数据访问属性，并且没有被标记为writalbe:false，那就会直接在myObject中添加一个名为name的新属性，它是**屏蔽属性**。
+2. 如果在[[prototype]]链上层存在name，但是它被标记为writalbe:true，那么无法修改已有属性或者在myObject上创建屏蔽属性。如果运行在非严格模式下，会静默失败，否则会抛出一个错误。
+3. 如果在[[prototype]]链上层存在name并且它是一个setter，那就一定会调用它这个setter。name不会被添加到(或者说屏蔽于)myObject，也不会重新定义name这个setter。
+
+> 注意：只读属性会阻止[[prortotype]]链下层隐式创建(屏蔽)同名属性，这样做是为了模仿类属性的继承。
+
+```js
+const obj1 ={
+  a:1
+}
+const obj2 = Object.create(obj1)
+obj1.a // 1
+obj2.a // 1
+obj1.hasOwnProperty('a') // true 
+obj2.hasOwnProperty('a') // false
+
+obj2.a++
+obj1.a // 1
+obj2.a // 2
+obj2.hasOwnProperty('a') // true
+```
+
+尽管obj2.a++看起来应该(通过委托)查找并添加obj1.a属性，但是别忘了++操作符相当于obj2.a = obj2.a + 1，因此++操作符首先会通过[[prototype]]查找a属性并从obj1获取当前属性值a，然后给这个值+1，接着用[[Put]]将值2赋值给obj1新建的屏蔽属性a。
+
+修改委托属性时一定要小心。如果想obj1的a+1，那唯一的办法就是obj.a++。
+
+#### 类
+
+实际上，JavaScript才是真正应该被称为面向对象的语言，因为它是少有可以不通过类，直接创建对象的语言。
+
+##### 类函数
+
+所有的函数默认都会拥有一个名为prototype的公有并且**不可枚举**的属性，它会指向另外一个对象。
+
+```js
+function Foo(){...}
+Foo.prototype // {}
+```
+
+这个对象通常被称为Foo的原型，因为通过名为Foo.prototype的属性引用来访问它。
+
+在面向类的语言中，类可以被复制(或者说实例化)多次，就像用模具制作东西一样。但是在JavaScript中，并没有类似的复制机制。你不能创建一个类的多个实例、只能创建多个对象，它们的[[prototype]]关联的说同一个对象。
+
+我们并没有实例化一个类，实际上我们并没有从类中复制任何行为到一个对象中，只是让两个对象**互相关联**。
+
+```js
+function Foo(){...}
+const f = new Foo()
+```
+
+**new Foo()这个函数调用实际上并没有直接创建关联，这个关联只是一个意外的副作用。new Foo()只是间接完成了我们的目标：一个关联到其他对象的新对象。**
+
+##### 构造函数还是调用
+
+```js
+function Foo(){...}
+const f = new Foo()
+```
+
+实际上，Foo和其他函数没有任何区别。**函数本身并不是构造函数，然而，当你在普通函数调用前面加上new关键字之后，就会把这个函数调用变成一个构造函数调用。实际上，new会劫持所有普通函数并用构造对象的形式来调用。**
+
+##### 回顾构造函数
+
+Foo.prototype的constructor属性只是Foo函数在声明时的默认属性。如果你创建了一个新对象并替换了函数默认的prototype对象引用，那么新对象并不会自动获得constructor属性。
+
+思考下面代码：
+
+```js
+function Foo(){...}
+Foo.prototype = {...}  // 创建一个新的原型对象
+
+const f = new Foo()                 
+f.constructor === Foo // false       
+f.constructor === Object // true         
+```
+
+为什么会这样？f并没有constructor属性，所以它会委托[[prototype]]链上的Foo.prototype。但是对象也没有constructor属性(不过默认的Foo.prototype对象有这个属性！)，所以它会继续委托，这次会委托给委托链顶端的Object.prototype。这个对象有constructor属性，指向内置的Object(...)函数。
+
+```js
+function Foo(){...}
+Foo.prototype = {}  // 创建一个新原型对象
+
+// 需要对Foo.prototype上修复丢失的construcror属性
+// 新对象属性起到Foo.prototype的作用
+Object.defineProperty(Foo.prototype,'construcror',{
+  enumerable: false,
+  writable:true,
+  configurable:true,
+  value:this // 让construcror指向Foo
+})
+```
+
+修复construcror需要很多手动操作，所以这些工作都是源于把construcror错误地理解成**由...构造**。
+
+实际上，对象的construcror默认指向一个函数，而这个函数也有一个叫做prototype的引用指向这个对象。
+
+construcror并不是一个不可变属性，它是不可枚举的，但是它的值是可读写的。此外，你可以给人以[[prototype]]链中任意对象添加一个名为construcror的属性或者对其进行修改，你可以任意对其赋值。
+
+#### 原型继承
+
+
+
 ## 你不知道的JavaScript系列-中卷
 
 ## 你不知道的JavaScript系列-下卷
