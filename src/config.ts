@@ -59,3 +59,4 @@ export const SIDEBAR: Sidebar = {
     // 'Another Section': [{ text: 'Page 4', link: 'en/page-4' }],
   },
 };
+
