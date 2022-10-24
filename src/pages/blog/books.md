@@ -2153,6 +2153,186 @@ construcror并不是一个不可变属性，它是不可枚举的，但是它的
 
 #### 原型继承
 
+原型风格的代码：
+
+```js
+function Foo(name){
+  this.name = name
+}
+
+Foo.prototype.myName = function(){
+  return this.name
+}
+
+function Bar(name,label){
+  Foo.call(this,name)
+  this.label = label
+}
+
+// 创建一个新的Bar.prototype对象关联到Foo.prototype
+Bar.prototype = Object.create(Foo.prototype)
+// 注意！现在没有Bar.prototype.constructor了
+// 如果你需要这个属性的话需要手动修复它
+Bar.prototype.myLabel = function(){
+  return this.label
+}
+const a = new Bar('a','obj a')
+a.myName()  // 'a'
+a.myLabel()  // 'obj a'
+```
+
+调用Object.create(...)会凭空创建一个新的对象并把新对象内部的prototype关联到你指定的对象。
+
+注意以下两种常见的错误做法，实际上它们都存在一些问题：
+
+```js
+// 和你想的不一样
+Bar.prototype = Foo.prototype
+
+// 基本上满足你的需求，但是可能会产生一些副作用
+Bar.prototype = new Foo()
+```
+
+Bar.prototype = Foo.prototype并不会创建一个关联到Bar.prototype的新对象，它只是让Bar.prototype直接引用Foo.prototype对象。因此当你执行类似Bar.prototype.myLabel =...的赋值语句时会直接修改Foo.prototype对象本身。显然这不是我们想要的结果，否则我们根本不需要Bar对象，直接使用Foo对象即可。
+
+
+Bar.prototype = new Foo()的确会创建一个关联到Foo.prototype的新对象。但是它使用了Foo(...)的构造函数调用，如果函数Foo有一些副作用（比如写日志、修改状态、注册到其他对象、给this添加数据属性）的话，就会影响到Bar()的后代，后果很严重。
+
+
+因此，要创建一个合适的关联对象，我们必须使用Object.create(...) 而不是使用具有副作用的Foo(...)。这样做唯一的缺点就是需要创建一个新对象任何把旧对象抛弃掉，不能直接修改已有的默认对象。
+
+
+有两种把Bar.prototype关联到Foo.prototype的方法：
+
+```js
+// ES6之前需要抛弃默认的Bar.prototype
+Bar.prototype = Object.create(Foo.prototype)
+// ES6之后可以直接修改现有的Bar.prototype
+Bar.setPrototypeof(Bar.prototype,Foo.prototype)
+```
+
+如果忽略掉Object.create(...)方法带来的轻微性能损失，它实际上比ES6及其之后的方法更短而且可读性更高。
+
+##### 检查“类”关系
+
+思考以下代码：
+
+```js
+function Foo(){
+  // ...
+}
+
+Foo.prototype.blah = ...
+const a = new Foo()
+
+a instanceof Foo // true
+```
+
+instanceof操作符的左操作数数一个普通的对象，右操作数数一个函数。instanceof回答是：在a的整条prototype链上是否有Foo.prototype指向的对象？
+
+> 通常我们不会在“构造函数调用”中使用硬绑定函数，不过如果你这么做的话，实际上相当于直接调用目标函数。同理，在硬绑定函数上使用instanceof也相当于直接在目标函数上使用instanceof。
+
+下面是第二种判断[[prototype]]反射的方法，它更加的简洁：
+
+```js
+Foo.prototype.isPrototyprOf(a) // true
+```
+
+isPrototypeOf(...)回答的是：在a的整条[[prototype]]链上是否出现过Foo.prototype？
+
+#### 对象关联
+
+prototype机制就是存在于对象中的一个**内部链接**，它会引用其他对象。这个链接的作用是：**如果在对象上没有找到需要的属性或方法引用，引擎就会继续在[[prototype]]关联的对象上进行查找。同理，如果在后者中也没有找到需要的引用就会继续查找它的[[prototype]]，这一系列对象的链接就被称为原型链。**
+
+##### 创建关联
+
+来看看Object.create(...)的强大之处：
+
+```js
+const foo = {
+  something:function (){
+    console.log('hello!')
+  }
+}
+const bar = Obejct.create(foo)
+bar.something()   // hello!
+```
+
+Object.create(...)会创建一个(bar)并把它关联到我们指定的对象(foo)中，这样我们就可以充分发挥[[prototype]]机制的威力(委托)并且避免不必要的麻烦(比如使用new的构造函数调用生成.prototype和.constructor引用)。
+
+> Object.create(null)会创建一个拥有空(或者null)[[prototype]]链接的对象，这个对象无法进行委托。由于这个对象没有原型链，所以instanceof操作符无法判断，因此总是返回false。这些特殊的空[[prototype]]对象通常被称作“字典”，它们完全不会受到原型链的干扰，因此非常适合用来**存储数据**。
+
+Object.create(...)的polyfill代码：
+
+```js
+if(!Object.create){
+  Object.create = function (o){
+    function F(){}
+    F.prototype = o
+    return new F()
+  }
+}
+```
+
+这段polyfill代码使用了一个一次性函数F，我们通过改写它的.prototype属性使其指向想要关联的对象，然后再使用new F()来构造一个新对象进行关联。
+
+> 注：polyfill是兼容性代码。
+
+### ES6中的Class
+
+传统面向类的语言中父类、子类和实例之间其实是复制操作。但是在[[prototype]]中并没有复制，相反，它们之间只有**委托关联**。
+
+ES6的Class解决了什么问题？
+
+1. 不再引用杂乱的prototype。
+2. 可以通过super(...)来实现**相对多态**，这样任何方法都可以引用原型链上层的同名方法。构造函数不属于类，所以无法互相引用——super()可以完美解决构造函数的问题。
+3. class字面量语法不能声明属性（只能声明方法）。看起来这是一种限制，但是它会排除掉许多不好的情况，如果没有这种限制的话，原型链末端的“实例”可能会意外地获取其他地方的属性（这些属性隐式被所有实例所共享）。所以class实际上可以帮助我们避免犯错。
+4. 可以通过extends很自然地扩展对象（子）类型，甚至是内置的对象（子）类型，比如Array或RegExp。没有class ...extends语法时，想实现这一点非常困难，基本上只有框架的作者才能搞清楚这一点，但是现在可以轻而易举地做到。
+
+#### Class陷阱
+
+class基本上只是现在的[[prototype]]委托机制的一个语法糖。
+
+也就是说，class并不会像传统面向类的语言一样在声明时静态复制所有行为。如果你（有一或者无意）修改或者替换了父类中的一个方法，那子类和所有实例都会受到影响，因为它们在定义时并没有进行复制，只是使用了**基于[[prototype]]的实时委托**。
+
+```js
+class C{
+  constructor(){
+    this.num = Math.random()
+  }
+  rand(){
+    console.log(this.num)
+  }
+}
+
+const c1 = new C()
+c1.rand()   // 0.4242424...
+C.prototype.rand = function (){
+  console.log(this.num * 1000)
+}
+const c2 = new C()
+c2.rand() // 424
+c1.rand()  // 996，连c1实例的方法都被改变了
+```
+
+class语法还有一个意外屏蔽的问题：
+
+```js
+class P(){
+  constructor(id){
+    this.id = id
+  }
+  id(){
+    console.log('yxz')
+  }
+}
+
+const p = new P()
+p.id()  // TypeError: p.id现在是一个字符串，并不是一个方法
+```
+
+除此之外，super也存在一些问题。super并不是动态绑定的，它会在声明时静态绑定的。出于性能问题，super并不像this一样是**晚绑定**的，它会在创建时静态绑定。
+
 
 
 ## 你不知道的JavaScript系列-中卷
