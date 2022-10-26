@@ -478,8 +478,10 @@ li{
 	color: rgb(145, 109, 213);
 }
 
-.main-section p{
-	line-height: 30px;
+.main-section p,
+.main-section li
+{
+	line-height: 34px;
 }
 
   /* 移动端屏幕下 */
@@ -487,7 +489,9 @@ li{
 	.main-section .astro-code{
 	margin: 8px 0;
 	}
-	.main-section p{
-		line-height: 30px;
+	.main-section p,
+	.main-section li
+	{
+		line-height: 34px;
 	}
   }
