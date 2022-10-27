@@ -2721,6 +2721,112 @@ slice( ... )不带参数会返回当前数组的一个浅复本（浅拷贝）�
 - null类型只有一个值null，undefined类型也是只有一个值undefined。所有变量在赋值之前默认都是undefined。void运算符返回undefined。
 - 简单数据类型通过**值复制**来赋值/函数参数传递。复杂/引用数据类型通过引用来赋值/传递。
 
+### 原生函数
+
+常见的原生函数有：
+
+- String()
+- Number()
+- Boolean()
+- Array()
+- Object()
+- Function()
+- RegExp()
+- Date()
+- Error()
+- Symbol()   ES6新增
+
+```js
+const str = new String('hello!')
+typeof str  // Object，并不是string
+str instanceof string. // true
+Object.prototype.toString( str ) // [Object String]
+```
+
+通过new String('hello')创建的字符串'hello'是**封装对象**，而非基本类型值"hello"。
+
+#### 封装对象包装
+
+封装对象扮演着十分重要的角色。由于基本数据类型没有`.length`和`.toString`这样的属性和方法，需要通过封装对象才能访问，此时JavaScript会自动为基本类型包装一个封装对象。
+
+```js
+// 例:
+let a = 'JavaScript'
+a.length. // 9
+a.toUpperCase()  // JAVASCRIPT
+```
+
+如果需要经常用到这些字符串属性和方法，比如在for循环中使用`i<a.length`，那么从一开始就创建一个封装对象也许更为方便，这样JavaScript引擎不用每次自动创建了，但实际证明这并不是好办法，因为浏览器已经为`.length`这样的常见的情况做了性能优化，直接使用封装对象来**提前优化**代码反而会降低执行效率。
+
+#### 拆封
+
+如果想要得到封装对象的基本类型值，可以使用`valueOf`函数。
+
+```js
+let a = new String('abc')
+let isLoad = new Boolean(true)
+let num = new Number(123)
+
+a.valueOf()  // abc
+isLoad.valueOf()  // true
+num.valueOf()  // 123
+```
+
+在需要用到封装对象中的基本类型值的地方会发生隐式拆封:
+
+```js
+let a = new String('hey')
+let b = a + '!!!'
+b // hey!!!
+
+typeof a // Object
+typeof b // String
+```
+
+#### 原生原型
+
+根据文档约定，我们将String.prototype.YXZ简写成String#YXZ，对其他.prototype也同样如此。
+
+- String#indexOf( ... )
+
+在字符串中找到指定子字符串的位置。
+
+- String#charAt( ... )
+
+获得字符串指定位置上的字符。
+
+- String#substr( ... )、String#subString( ... ) 和 String#slice( ... )
+
+获得字符串的指定部分
+
+- String#toUpperCase( ... ) 和 String#toLowerCase( ... )
+
+将字符串转换为大写/小写。
+
+- String#trim( ... )
+
+去掉字符串前后的空格，返回新的字符串。
+
+以上方法都不改变原字符串，返回新的字符串。
+
+```js
+typeof Function.prototype.  // function
+Function.prototype.  // 空函数！
+
+RegExp.prototype. // '/(?:)/'  空正则表达式
+
+// 我们甚至可以去修改它们
+Array.isArray(Array.prototype)   // true
+Array.prototype.push(1,2,3)  // 3
+Array.prototype // [1,2,3]
+```
+
+> 注意：Function.prototype上一个函数、RegExp.prototype上一个正则表达式，而Array.prototype上一个数组。
+
+#### 小结
+
+对于简单基本类型值，比如`'abc'`，如果要访问它们的`length`属性或`String.prototype`方法，JavaScript引擎会自动对该值进行封装(即用相应类型的封装对象来包装它)来实现对这些属性和方法的访问。
+
 
 
 ## 你不知道的JavaScript系列-下卷
