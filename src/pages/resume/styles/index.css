@@ -1,3 +1,5 @@
+/* 个人简历样式 */
+
 ol {
   list-style:disc;
 }
@@ -6,10 +8,17 @@ ol > li:nth-child(n+1){
     margin-bottom: 1rem;
 }
 
+/* 一级标题 */
 .yxz-bt1 {
   padding-bottom: 0.6rem;
   color: rgb(21, 117, 191);
   border-bottom: 2px solid rgb(21, 117, 191);
   /* padding-left: 1rem;
     border-left: 5px solid #916dd5; */
+}
+
+/* 加粗 */
+.yxz-strong{
+    padding:.3rem;
+    color:#de8344;
 }
