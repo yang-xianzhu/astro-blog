@@ -1,0 +1,33 @@
+@font-face {
+    font-family: "iconfont"; /* Project id  */
+    src: url('iconfont.ttf?t=1666864359922') format('truetype');
+  }
+  
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icon-wechat:before {
+    content: "\e629";
+  }
+  
+  .icon-github:before {
+    content: "\e718";
+  }
+  
+  .icon-Phoneshouji:before {
+    content: "\e8dc";
+  }
+  
+  .icon-position:before {
+    content: "\e7f1";
+  }
+  
+  .icon-email:before {
+    content: "\e74f";
+  }
+  
