@@ -14,6 +14,7 @@ layout: ../../layouts/MainLayout.astro
 #### 1、书籍系列
 - ✅ **红宝书**
 - ❎ **你不知道的JavaScript系列**
+- ❎ **CSS世界**
 - ❎ **JavaScript设计模式**
 - ❎ **学习JavaScript数据结构与算法**
 - ❎ **图解HTTP**
