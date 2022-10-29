@@ -1,6 +1,7 @@
 ---
 import Layout from "./layout/Layout.astro";
 import "./assets/iconfont.css";
+import './styles/index.css'
 // import  {Skill}  from "./components/Skill";
 import config from "./meta.config";
 
@@ -64,9 +65,9 @@ const { skills, name } = config;
       </div>
     </div>
     <div class="md:w-2/3 p-2 w-full">
-        <!-- 个人评价 -->
+      <!-- 个人评价 -->
       <div class="mx-4 mb-6">
-        <h1 class="mb-4 text-4xl text-gray-700 font-bold">个人评价</h1>
+        <h1 class="mb-4 text-2xl text-gray-700 font-bold yxz-bt1">个人评价</h1>
         <p class="text-lg">
           很帅！很帅！很帅！很帅！很帅！很帅！很帅！很帅！很帅！很帅！
           很帅！很帅！很帅！很帅！很帅！很帅！很帅！很帅！很帅！很帅！
@@ -75,79 +76,48 @@ const { skills, name } = config;
       </div>
       <div class="mx-4">
         <!-- 工作经历 -->
-        <h1 class="mb-4 text-4xl text-gray-700 font-bold">工作经历</h1>
+        <h1 class="mb-4 text-2xl text-gray-700 font-bold yxz-bt1 mt-3">工作经历</h1>
         <ul>
           <li class="mb-4">
-            <h2 class="text-3xl font-medium text-gray-800 text-center">蚂蚁金服</h2>
-            <div>
-              <i class="bx bx-calendar text-sm" style="color: #666"></i>
-              <small class="text-sm text-gray-600">2021年8月 - 至今</small>
+            <div class="flex justify-between items-center mt-3">
+              <small class="text-sm text-gray-600 ">
+                2022年9月 - 至今
+              </small>
+              <h6 class="text-1xl font-medium text-gray-800 ">
+                珠海格力
+              </h6>
+              <p>前端开发</p>
             </div>
-            <div class="mt-1">
-              <div>
-                <h3 class="text-2xl font-medium text-gray-800">DEF项目</h3>
-                <p>基于 star 面试法来写 - 背景 - 任务 - 行动 - 结果</p>
-              </div>
-            </div>
-            <div class="mt-1">
-              <div>
-                <h3 class="text-2xl font-medium text-gray-800">GHI项目</h3>
-                <p>基于 star 面试法来写 - 背景 - 任务 - 行动 - 结果</p>
-              </div>
-            </div>
-            <div class="mt-1">
-              <div>
-                <h3 class="text-2xl font-medium text-gray-800">其他项目</h3>
-                <p>写2 - 3 个核心项目就足够了, 能体现出你的价值的</p>
-              </div>
-            </div>
-          </li>
-          <li class="mb-4">
-            <h2 class="text-3xl font-medium text-gray-800 text-center">字节跳动</h2>
-            <div>
-              <i class="bx bx-calendar text-sm" style="color: #666"></i>
-              <small class="text-sm text-gray-600">2021年8月 - 至今</small>
-            </div>
-            <div class="mt-1">
-              <div>
-                <h3 class="text-2xl font-medium text-gray-800">DEF项目</h3>
-                <p>基于 star 面试法来写 - 背景 - 任务 - 行动 - 结果</p>
-              </div>
-            </div>
-            <!-- <div class="mt-1">
-              <div>
-                <h3 class="text-2xl font-medium text-gray-800">GHI项目</h3>
-                <p>基于 star 面试法来写 - 背景 - 任务 - 行动 - 结果</p>
-              </div>
-            </div>
-            <div class="mt-1">
-              <div>
-                <h3 class="text-2xl font-medium text-gray-800">其他项目</h3>
-                <p>写2 - 3 个核心项目就足够了, 能体现出你的价值的</p>
-              </div>
-            </div> -->
+            <ol class="pt-6 px-4">
+                <li>负责公司后台管理，以及移动端的开发</li>
+                <li>根据需求分析文档，配合产品经理和测试完成产品需求/进度</li>
+                <li>协助组长二次封装组件供组员使用，提供开发效率的同时统一了项目风格</li>
+                <li>重构了移动端几个模块的页面，统一组件风格</li>
+            </ol>
           </li>
         </ul>
       </div>
       <div class="mx-4">
-        <h1 class="mb-4 text-4xl text-gray-700 font-bold">Skill</h1>
+        <!-- 项目经历 -->
+        <h1 class="mb-4 text-2xl text-gray-700 font-bold mt-3 yxz-bt1">项目经历</h1>
+        <!-- 项目经历主体 -->
+        <div>
+            <h4 class="text-center">高栏港后台管理系统</h4>
+            <p class="font-bold">项目描述：</p>
+            <p>该项目是基于Vue3+TS+vben开发的后台管理系统，用于帮助企业提升管理效率，还可以解决诸多管理问题。实现了各大模块的菜单管理、配置式新增路由、权限分配</p>
+        </div>
+      </div>
+      <div class="mx-4">
+        <h1 class="mb-4 text-2xl text-gray-700 font-bold mt-3 yxz-bt1">技能</h1>
         <ul>
           <li class="mb-6 flex flex-wrap">
-            <span
-              class="mr-2 my-1 rounded-full border px-4 text-sm py-2 font-medium bg-gray-200"
-            >
-              Vuejs
-            </span>
-            <span
-            class="mr-2 my-1 rounded-full border px-4 text-sm py-2 font-medium bg-gray-200"
-          >
-            Reactjs
-          </span>
-            <!-- {
-              skills.map((name) => 
-                 <Skill name={name} client:load />
-              )
-            } -->
+            {
+              skills.map((v) => (
+                <span class="mr-2 my-1 rounded-full border px-4 text-sm py-2 font-medium bg-gray-200">
+                  {v}
+                </span>
+              ))
+            }
           </li>
         </ul>
       </div>
