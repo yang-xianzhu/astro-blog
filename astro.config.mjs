@@ -12,6 +12,7 @@ export default defineConfig({
     react(),
     tailwind(),
   ],
-  site: "https://yang-xianzhu.github.io", // base:'/src/pages/yzz'
+  site: "https://yang-xianzhu.github.io", 
+  // base:'/src/pages'
   // site: `http://astro.build`,
 });

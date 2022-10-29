@@ -190,6 +190,15 @@ strong {
 	color: inherit;
 }
 
+ul {
+	list-style:disc !important;
+  }
+
+  ul li::marker{
+	font-size: 20px !important;
+	/* content:'' */
+}
+
 /* Supporting Content */
 
 code {
@@ -282,13 +291,44 @@ blockquote code {
 	background-color: var(--theme-bg);
 }
 
+/* 移动端手机下 */
 @media (min-width: 37.75em) {
 	pre {
 		--padding-inline: 1.25rem;
 		margin-left: 0;
 		margin-right: 0;
 	}
+	ul {
+		list-style:disc;
+	  }
+
+	  ul li::marker{
+		font-size: 10px;
+	}
+
 }
+
+  /* 移动端屏幕下  包括偏大屏幕的手机/ipad*/
+  @media (max-width: 770px) {
+
+	.main-section .astro-code{
+	margin: 8px 0;
+	}
+
+	.main-section p,
+	.main-section li
+	{
+		line-height: 34px;
+	}
+
+	ul {
+		list-style:disc;
+	  }
+
+	  ul li::marker{
+		font-size: 20px;
+	}
+  }
 
 blockquote {
 	margin: 2rem 0;
@@ -483,15 +523,3 @@ li{
 {
 	line-height: 34px;
 }
-
-  /* 移动端屏幕下 */
-  @media (max-width: 770px) {
-	.main-section .astro-code{
-	margin: 8px 0;
-	}
-	.main-section p,
-	.main-section li
-	{
-		line-height: 34px;
-	}
-  }

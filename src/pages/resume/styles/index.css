@@ -1,10 +1,10 @@
 /* 个人简历样式 */
 
-ol {
+.yxz-resume ol {
   list-style:disc;
 }
 
-ol > li:nth-child(n+1){
+.yxz-resume ol > li:nth-child(n+1){
     margin-bottom: 1rem;
 }
 
