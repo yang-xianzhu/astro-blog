@@ -3111,6 +3111,232 @@ if(a===2 && a===3){
 
 #### 语句和表达式
 
+语句相当于句子，表达式相当于短句，运算符则相当于标点符号和连接词。表达式可以返回一个结果值。
+
+```js
+let a = 3 * 6
+let b = a
+b
+```
+
+`Let b = a `称为**声明语句**，因为它们声明了变量(还可以为其赋值)。`a =  3 * 6` 和 `b = a`(不带let)叫做**赋值表达式**。
+
+##### 语句的结果值
+
+如果你平常使用的`chrome`开发控制台题调试过代码，应该会看到很多语句的返回值都显示undefined，只是我们可能从未探究过其中的原因。**其实控制台中显示的就是语句的结果值**。
+
+比如代码块`{...}`的结果值是其最后一个语句/表达式的结果。例如：
+
+```js
+let b;
+if(true){
+  b = 4 + 48
+}
+```
+
+在控制台中输入以上代码应该会显示52，即返回最后一个语句的结果值。
+
+但是以下代码无法运行：
+
+```js
+let a,b;
+a = if(true){
+  b = 4 + 48
+}
+```
+
+因为语法不允许我们获得语句的结果值并将其赋值给另外一个变量。可以使用万恶的`eval`()来获得结果。
+
+```js
+let a,b
+a = eval('if(true) {b =4 + 48}')
+```
+
+##### 表达式的副作用
+
+最常见的有副作用的(当然也有可能没有)的表达式是**函数调用**。
+
+```js
+let a = 1
+function foo (){
+  a = a + 1
+}
+foo()   // 返回值是undefined  副作用是a的值被改变了
+```
+
+回顾到上次提到的  `[] + {} `和 `{} + []`的结果是不一样的。
+
+前者，{}出现在+运算符表达式中，因此它被当作一个值(空对象)来处理，我们知道`[]`会通过toString被转换成`''`，而`{}`则会被强制类型转换为`[Object Object]`。
+
+后者，`{}`被当作一个独立的代码块(不执行任何操作)。代码块结尾不需要分号，所以这里不存在语法上的问题。最后+ []将`[]`显示强制类型转换为0。
+
+##### else if 和 可选代码块
+
+很多人误以为JavaScript中有**else if**，因为我们可以这样写代码：
+
+```js
+if(a){
+  ...
+}else if(b){
+  ...
+}else{
+  ...
+}
+```
+
+事实上JavaScript中没有else if ，但if 和else 只包含单条语句的时候可以省略代码块的`{}`。
+
+```js
+if(a)  console.log('hello') // 当if代码块只有一条语句时可以省略代码块{}
+```
+
+else也是如此，所以我们经常用到的else if 实际上是这样的:
+
+```js
+if(a){
+  ...
+}else{
+  if(b){
+    ...
+  }else{
+    ...
+  }
+}
+```
+
+##### try...finally
+
+finally中的代码总是会在try之后执行，如果有catch的话则在catch之后执行。也可以将finally中的代码看作一个**回调函数**，**即无论出现什么情况最后一定会被调用**。
+
+```js
+function foo (){
+  try{
+    return 42
+  }finally{
+    console.log('hey')
+  }
+  console.log('不会执行到这里！')
+}
+console.log(foo())
+// hey
+// 42
+```
+
+这里return 42 先执行，并将`foo()`函数的返回值设置为42，然后try执行完毕，接着执行finally。最后foo()函数执行完毕，console.log( ... )显示返回值。
+
+```js
+function foo(){
+  try{
+    throw 42
+  }finally{
+    console.log('hey')
+  }
+  console.log('不会执行到这！')
+}
+
+console.log(foo())
+// hey
+// Uncaught Exception:42
+```
+
+如果try里面抛出异常(无论是有意的还是无意的)，函数就会在此处终止。如果此前`try`中已经有return设置了返回值，则该值会**被丢弃**。
+
+`continue`和`break`也是如此：
+
+```js
+for(let a=0;i<10;i++){
+  try{
+    continue;
+  }finally{
+    console.log(i)
+  }
+}
+// 0 ~ 9
+```
+
+continue在每次循环之后，会在`i++`之前就执行`log`，所以结果是0~9，而非是1~10。
+
+`finally`会覆盖`try`中的返回值：
+
+```js
+function foo(){
+  try{
+    return 42
+  }finally{
+    return
+  }
+}
+
+console.log(foo())  // undefined
+```
+
+##### switch
+
+switch可以把它看作if...else if ...else的简化版本：
+
+```js
+switch(a){   // ===> 这里用的是严格匹配
+  case 2:
+    // ...
+    break
+  case 3:
+    // ... 
+    break
+  default:
+    // ...
+}
+```
+
+这里`a`和`case`进行逐一匹配，如果匹配就执行该case中的代码，直到`break`或者switch代码块终止。
+
+`a` 和 `case` 表达式的匹配算法与 `===`相同。但是通常case语句中的switch都是简单值，所以并没有什么问题。
+
+但是有时候我们需要通过强制类型转换来进行相等比较(==)。这时候我们可以这样处理：
+
+```js
+let a = '42'
+
+switch(true){
+  case a == 10:
+    console.log('10')
+    break
+  case a == 42:
+    console.log('42')
+    break
+  default:
+    // 不会执行到这里！
+}
+
+// '42'
+```
+
+尽管可以使用`==`，但switch中的`true`和`false`仍然是严格相等比较的。即如果`case`表达式的结果为真值，但不是严格意义上的`true`，则条件不成立。所以这里使用`&&`或者`||`就很容易掉进坑里！
+
+```js
+let a = 'hello'
+let b = 10
+
+switch(true){
+  case (a || b) == 10:
+    // 永远执行不到这里！
+    break
+  default:
+    console.log('defalut')
+}
+```
+
+因为`(a || b) == 10`的结果是`'hello'`，而非true，所以严格相等比较不成立，此时可以通过强制类型转换返回true或false，比如`case !!(a || b) == 10`。
+
+#### 小结
+
+- `{}`在不同情况下的意思不尽相同，可以说`语句块`、`对象常量`、`解构赋值`或者`命名函数参数`。
+- JavaScript中有很多错误类型，分为两大类：
+  - 早期错误(编译时错误，无法被捕获)
+  - 运行时错误(可以通过`try...catch`来捕获)
+
+- 所有语法错误都是早期错误，程序有语法错误则无法运行。
+- 尽量不要使用`arguments`，如果非用不可，也切勿同时使用arguments和其对应的命名参数。
+
 
 
 
