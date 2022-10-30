@@ -190,14 +190,14 @@ strong {
 	color: inherit;
 }
 
-ul {
+/* ul {
 	list-style:disc !important;
   }
 
   ul li::marker{
 	font-size: 20px !important;
-	/* content:'' */
-}
+	content:''
+} */
 
 /* Supporting Content */
 
@@ -298,13 +298,13 @@ blockquote code {
 		margin-left: 0;
 		margin-right: 0;
 	}
-	ul {
+	/* ul {
 		list-style:disc;
 	  }
 
 	  ul li::marker{
 		font-size: 10px;
-	}
+	} */
 
 }
 
@@ -321,13 +321,13 @@ blockquote code {
 		line-height: 34px;
 	}
 
-	ul {
+	/* ul {
 		list-style:disc;
 	  }
 
 	  ul li::marker{
 		font-size: 20px;
-	}
+	} */
   }
 
 blockquote {
