@@ -200,17 +200,19 @@ strong {
 } */
 
 /* Supporting Content */
-
+/* md中 ``的样式 */
 code {
 	--border-radius: 3px;
 	--padding-block: 0.2rem;
 	--padding-inline: 0.33rem;
 	font-family: var(--font-mono);
 	font-size: 0.85em;
-	color: inherit;
+	/* color: inherit; */
+	color:#3895ff;
 	background-color: var(--theme-code-inline-bg);
 	padding: var(--padding-block) var(--padding-inline);
-	margin: calc(var(--padding-block) * -1) -0.125em;
+	/* margin: calc(var(--padding-block) * -1) -0.125em; */
+	margin: 0 .2rem;
 	border-radius: var(--border-radius);
 	word-break: break-word;
 }
