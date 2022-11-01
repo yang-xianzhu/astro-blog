@@ -1730,6 +1730,103 @@ STAR 原则
 }
 ```
 
+### 小技巧
+
+#### keyof any
+
+TypeScript有一个内置类型叫做`Record`，它的作用是根据传入的索引和值的类型构造新的索引类型。
+
+```ts
+type res = Record<'name' | 'age','hello'>
+
+type res = {
+  name: 'hello',
+  age: 'hello'
+}
+```
+
+它的实现就是通过映射类型的语法构造一个索引类型：
+
+```ts
+type Record<K,T> = { [P in K]: T }
+```
+
+那么我们怎么去约束K的类型呢？
+
+我们知道JS的属性可以是`string`、`number`、`symbol`这三种类型。
+
+那我们直接是 `K extends string | number | symbol`？
+
+不，TypeScript有个编译选项叫做`keyofStringOnly`开启了那么就就只会用 string 作为索引，否则才是 string ｜ number | symbol。
+
+看下 TS 源码里是怎么定义 Record 的：
+
+```ts
+type Record<K extends keyof any, T> = { [P in K]: T; };
+```
+
+如果不开启`keyofStringOnly`的时：
+
+```ts
+type res = keyof any
+
+type res = string | number | symbol
+```
+
+开启`keyofStringOnly`：
+
+```ts
+type res = keyof any
+
+type res = string 
+```
+
+这样我们就能动态获取当前支持的key的类型了，需要约束某个类型参数为索引 Key 时，用 keyof any 动态获取比写死 string | number | symbol 更好！
+
+#### object 和 Record<string,any>
+
+TypeScript 里有三个类型比较难区分，就是 object、Object、{} 这几个。
+
+其实只要记住 **object 不能接受原始类型** 就可以了，其余两个差不多，只不过 {} 是个空对象，没有索引。
+
+所以 number 就可以赋值给 {}、Object 类型，但是不能赋值给 object 类型：
+
+```ts
+type res = number extends object ? true : false
+res ===> false
+
+type res = number extends {} ? true : false
+res ===> true
+
+type res = number extends Object ? true : false
+res ===> true
+```
+
+Record<string, any> 创建了一个 key 为任意 string，value 为任意类型的索引类型：
+
+```ts
+type res = Record<string,any>
+
+type res = {
+  [x:string]:any
+}
+```
+
+#### ? 和 ??
+
+TS支持的？的可选链语法，也可以通过`？？`指定默认值：
+
+```ts
+const name = data?.name ?? 'yxz'
+```
+
+#### 总结
+
+- keyof any 可以动态获取 key 支持的类型，根据 `keyofStringsOnly` 的编译选项，可以用来约束索引。
+- object 不能接收原始类型，而 {} 和 Object 都可以，这是它们的区别。
+- object 一般会用 Record<string, any> 代替，约束索引类型更加语义化
+- `?` 和 `??` 分别代表空判断和默认值，是写 TS 很常用的一个语法
+
 ## git
 
 #### 概述
