@@ -85,7 +85,7 @@ export const SIDEBAR: Sidebar = {
       },
       {
         text: "TypeScript",
-        link: `blog/InterviewUestions/ts`,
+        link: `blog/InterviewUestions/typeScript`,
       },
       {
         text: "Git",
