@@ -51,75 +51,75 @@ export type Sidebar = Record<
 export const SIDEBAR: Sidebar = {
   en: {
     "": [
-      { text: "首页", link: `${BASEURL}/home` },
-      // { text: "面试题", link: `${BASEURL}/interview-uestions` },
-      // { text: "源码", link: `${BASEURL}/source-code` },
-      // { text: "算法", link: `${BASEURL}/algorithm` },
-      // { text: "工具库", link: `${BASEURL}/tool-library` },
-      // { text: "工程化", link: `${BASEURL}/engineering` },
+      { text: "首页", link: `blog/home` },
+      // { text: "面试题", link: `blog/interview-uestions` },
+      // { text: "源码", link: `blog/source-code` },
+      // { text: "算法", link: `blog/algorithm` },
+      // { text: "工具库", link: `blog/tool-library` },
+      // { text: "工程化", link: `blog/engineering` },
     ],
     面试题: [
       {
         text: "前端基础",
-        link: `${BASEURL}/InterviewUestions/basis`,
+        link: `blog/InterviewUestions/basis`,
       },
       {
         text: "Vue",
-        link: `${BASEURL}/InterviewUestions/vue`,
+        link: `blog/InterviewUestions/vue`,
       },
       {
         text: "HTTP",
-        link: `${BASEURL}/InterviewUestions/http`,
+        link: `blog/InterviewUestions/http`,
       },
       {
         text: "面试记录",
-        link: `${BASEURL}/InterviewUestions/interviewRecords`,
+        link: `blog/InterviewUestions/interviewRecords`,
       },
       {
         text: "小程序",
-        link: `${BASEURL}/InterviewUestions/smallProgra`,
+        link: `blog/InterviewUestions/smallProgra`,
       },
       {
         text: "项目遇到的问题",
-        link: `${BASEURL}/InterviewUestions/projectProblems`,
+        link: `blog/InterviewUestions/projectProblems`,
       },
       {
         text: "TypeScript",
-        link: `${BASEURL}/InterviewUestions/ts`,
+        link: `blog/InterviewUestions/ts`,
       },
       {
         text: "Git",
-        link: `${BASEURL}/InterviewUestions/git`,
+        link: `blog/InterviewUestions/git`,
       },
       {
         text: "React",
-        link: `${BASEURL}/InterviewUestions/react`,
+        link: `blog/InterviewUestions/react`,
       },
     ],
     书籍: [
       {
         text: "JavaScript高级程序设计-第四版",
-        link: `${BASEURL}/Book/RedBook/fourthEdition`,
+        link: `blog/Book/RedBook/fourthEdition`,
       },
       { text: "你不知道的JS-上卷", 
-      link: `${BASEURL}/Book/YouDontKnowJS/Top` 
+      link: `blog/Book/YouDontKnowJS/Top` 
     },
       {
         text: "你不知道的JS-中卷",
-        link: `${BASEURL}/Book/YouDontKnowJS/Middle`,
+        link: `blog/Book/YouDontKnowJS/Middle`,
       },
       {
         text: "你不知道的JS-下卷",
-        link: `${BASEURL}/Book/YouDontKnowJS/Bottom`,
+        link: `blog/Book/YouDontKnowJS/Bottom`,
       },
     ],
     源码:[
-      {text:'Vue',link:`${BASEURL}/sourceCode/vue`}
+      {text:'Vue',link:`blog/sourceCode/vue`}
     ],
-    // 工具库:[
+    工具库:[
       
-    // ],
-    // 工程化:[
-    // ]
+    ],
+    工程化:[
+    ]
   },
 };
