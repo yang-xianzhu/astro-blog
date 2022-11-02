@@ -56,6 +56,10 @@ export const SIDEBAR: Sidebar = {
       { text: "工具库", link: "blog/tool-library" },
       { text: "工程化", link: "blog/engineering" },
     ],
-    // 'Another Section': [{ text: 'Page 4', link: 'en/page-4' }],
+    // '书籍': [
+    //   {    text: '你不知道的JS-上卷', link: 'en/page-4' },
+    //   {    text: '你不知道的JS-中卷', link: 'en/page-4' },
+    //   {    text: '你不知道的JS-下卷', link: 'en/page-4' },
+    //   ],
   },
 };
