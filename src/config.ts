@@ -41,25 +41,84 @@ export const ALGOLIA = {
   apiKey: "XXXXXXXXXX",
 };
 
+export const BASEURL = "blog";
+
 export type Sidebar = Record<
   typeof KNOWN_LANGUAGE_CODES[number],
   Record<string, { text: string; link: string }[]>
 >;
+
 export const SIDEBAR: Sidebar = {
   en: {
     "": [
-      { text: "首页", link: "blog/home" },
-      { text: "面试题", link: "blog/interview-uestions" },
-      { text: "源码", link: "blog/source-code" },
-      { text: "算法", link: "blog/algorithm" },
-      { text: "书籍", link: "blog/books" },
-      { text: "工具库", link: "blog/tool-library" },
-      { text: "工程化", link: "blog/engineering" },
+      { text: "首页", link: `${BASEURL}/home` },
+      // { text: "面试题", link: `${BASEURL}/interview-uestions` },
+      // { text: "源码", link: `${BASEURL}/source-code` },
+      // { text: "算法", link: `${BASEURL}/algorithm` },
+      // { text: "工具库", link: `${BASEURL}/tool-library` },
+      // { text: "工程化", link: `${BASEURL}/engineering` },
     ],
-    // '书籍': [
-    //   {    text: '你不知道的JS-上卷', link: 'en/page-4' },
-    //   {    text: '你不知道的JS-中卷', link: 'en/page-4' },
-    //   {    text: '你不知道的JS-下卷', link: 'en/page-4' },
-    //   ],
+    面试题: [
+      {
+        text: "前端基础",
+        link: `${BASEURL}/InterviewUestions/basis`,
+      },
+      {
+        text: "Vue",
+        link: `${BASEURL}/InterviewUestions/vue`,
+      },
+      {
+        text: "HTTP",
+        link: `${BASEURL}/InterviewUestions/http`,
+      },
+      {
+        text: "面试记录",
+        link: `${BASEURL}/InterviewUestions/interviewRecords`,
+      },
+      {
+        text: "小程序",
+        link: `${BASEURL}/InterviewUestions/smallProgra`,
+      },
+      {
+        text: "项目遇到的问题",
+        link: `${BASEURL}/InterviewUestions/projectProblems`,
+      },
+      {
+        text: "TypeScript",
+        link: `${BASEURL}/InterviewUestions/ts`,
+      },
+      {
+        text: "Git",
+        link: `${BASEURL}/InterviewUestions/git`,
+      },
+      {
+        text: "React",
+        link: `${BASEURL}/InterviewUestions/react`,
+      },
+    ],
+    书籍: [
+      {
+        text: "JavaScript高级程序设计-第四版",
+        link: `${BASEURL}/Book/RedBook/fourthEdition`,
+      },
+      { text: "你不知道的JS-上卷", 
+      link: `${BASEURL}/Book/YouDontKnowJS/Top` 
+    },
+      {
+        text: "你不知道的JS-中卷",
+        link: `${BASEURL}/Book/YouDontKnowJS/Middle`,
+      },
+      {
+        text: "你不知道的JS-下卷",
+        link: `${BASEURL}/Book/YouDontKnowJS/Bottom`,
+      },
+    ],
+    源码:[
+      {text:'Vue',link:`${BASEURL}/sourceCode/vue`}
+    ],
+    工具库:[
+    ],
+    工程化:[
+    ]
   },
 };
