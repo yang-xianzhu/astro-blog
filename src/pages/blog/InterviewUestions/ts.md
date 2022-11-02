@@ -4,7 +4,7 @@ description: TypeScript
 layout: ../../../layouts/MainLayout.astro
 ---
 
-### tsconfig.json全解析
+<!-- ### tsconfig.json全解析
 
 ```json
 {
@@ -71,7 +71,7 @@ layout: ../../../layouts/MainLayout.astro
 }
 ```
 
-### 小技巧
+### 小技巧 -->
 
 #### keyof any
 

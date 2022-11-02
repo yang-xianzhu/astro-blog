@@ -114,12 +114,12 @@ export const SIDEBAR: Sidebar = {
       },
     ],
     源码:[
-      {text:'Vue',link:`blog/sourceCode/vue`}
+      {text:'Vue',link:`blog/SourceCode/vue`}
     ],
-    工具库:[
+    // 工具库:[
       
-    ],
-    工程化:[
-    ]
+    // ],
+    // 工程化:[
+    // ]
   },
 };
