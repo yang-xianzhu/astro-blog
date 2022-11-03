@@ -50,14 +50,14 @@ export type Sidebar = Record<
 
 export const SIDEBAR: Sidebar = {
   en: {
-    "": [
-      { text: "首页", link: `blog/home` },
-      // { text: "面试题", link: `blog/interview-uestions` },
-      // { text: "源码", link: `blog/source-code` },
-      // { text: "算法", link: `blog/algorithm` },
-      // { text: "工具库", link: `blog/tool-library` },
-      // { text: "工程化", link: `blog/engineering` },
-    ],
+    // "": [
+    //   // { text: "首页", link: `blog/home` },
+    //   // { text: "面试题", link: `blog/interview-uestions` },
+    //   // { text: "源码", link: `blog/source-code` },
+    //   // { text: "算法", link: `blog/algorithm` },
+    //   // { text: "工具库", link: `blog/tool-library` },
+    //   // { text: "工程化", link: `blog/engineering` },
+    // ],
     面试题: [
       {
         text: "前端基础",
@@ -112,14 +112,19 @@ export const SIDEBAR: Sidebar = {
         text: "你不知道的JS-下卷",
         link: `blog/Book/YouDontKnowJS/Bottom`,
       },
+      {
+        text: "JavaScript设计模式",
+        link: `blog/Book/DesignPatterns/JSDesgin`,
+      },
     ],
+    数据结构与算法:[],
     源码:[
       {text:'Vue',link:`blog/SourceCode/vue`}
     ],
-    // 工具库:[
+    工具库:[
       
-    // ],
-    // 工程化:[
-    // ]
+    ],
+    工程化:[
+    ]
   },
 };

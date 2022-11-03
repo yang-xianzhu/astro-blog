@@ -1,6 +1,6 @@
 ---
 title: JavaScript设计模式
-description: books
+description: JavaScript设计模式
 layout: ../../../../layouts/MainLayout.astro
 ---
 

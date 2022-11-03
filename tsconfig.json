@@ -3,9 +3,9 @@
   "compilerOptions": {
     "jsx": "preserve",
     "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@": ["src/"],
-    }
+    // "baseUrl": ".",
+    // "paths": {
+    //   "@": ["src/"],
+    // }
   }
 }
