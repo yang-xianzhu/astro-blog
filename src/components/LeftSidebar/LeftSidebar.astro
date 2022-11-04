@@ -1,7 +1,6 @@
 ---
 import { getLanguageFromURL } from '../../languages';
 import { SIDEBAR } from '../../config';
-
 type Props = {
 	currentPage: string;
 };
@@ -20,7 +19,7 @@ const sidebar = SIDEBAR[langCode];
 		{Object.entries(sidebar).map(([header, children]) => (
 			<li>
 				<div class="nav-group">
-					<h4>{header}</h4>
+					<h5>{header}</h5>
 					<ul>
 						{children.map((child) => {
 							const url = Astro.site?.pathname + child.link;

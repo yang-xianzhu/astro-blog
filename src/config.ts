@@ -125,6 +125,7 @@ export const SIDEBAR: Sidebar = {
       
     ],
     工程化:[
+      {text:'Node',link:`blog/Project/node`}
     ]
   },
 };
