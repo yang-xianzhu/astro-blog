@@ -13,6 +13,9 @@ layout: ../../../layouts/MainLayout.astro
 
 ```shell
 npm config set registry https://registry.npmjs.org
+
+// 切换到淘宝镜像
+npm config set registry https://registry.npm.taobao.org
 ```
 
 1. 然后执行**npm login** 或者 **npm adduser**，然后填写用户名、密码、邮箱即可（可以通过npm whoami查看当前登录人）
@@ -108,4 +111,15 @@ npm version [版本号]
 ```shell
 npm ping
 ```
+
+## 安装依赖
+
+```shell
+安装开发环境依赖，在package.json文件的devDependencies节点下
+npm install [包名] --save-dev / -D
+
+安装生产环境依赖，在package.json文件的dependencies节点下
+npm install [包名] --save / -S
+```
+
 

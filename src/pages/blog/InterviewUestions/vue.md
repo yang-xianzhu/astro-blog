@@ -1,10 +1,54 @@
 ---
 title: Vue
-description: Lorem ipsum dolor sit amet - 2
+description: Vue面试题
 layout: ../../../layouts/MainLayout.astro
 ---
 
-#### v-if和v-show的使用场景
+### 父子组件的渲染顺序（vue2）
+
+- 同步
+
+  - 加载阶段
+
+  ```vue
+  父beforeCreate->父created->父beforeMount->子beforeCreate->子created->子beforeMount->子mounted->父mounted
+  ```
+
+  - 更新阶段
+
+  ```vue
+  父beforeUpdate->子beforeUpdate->子updated->父updated
+  ```
+
+  - 销毁阶段
+
+  ```vue
+  父beforeDestroy->子beforeDestroy->子destroyed->父destroyed
+  ```
+
+- 异步 即通过 `()=> import('...')`方式引入组件
+
+  - 加载阶段
+
+  ```vue
+  父beforeCreate->父created->父beforeMount->父mounted->子beforeCreate->子created->子beforeMount->子mounted
+  ```
+
+  - 更新阶段
+
+  ```vue
+  父beforeUpdate->子beforeUpdate->子updated->父updated
+  ```
+
+  - 销毁阶段
+
+  ```vue
+  父beforeDestroy -> 子beforeDestroy -> 子destroyed -> 父destroyed 
+  ```
+
+  
+
+### v-if和v-show的使用场景
 
 v-if：是通过动态删除和创建整个DOM元素的，相对而言更消耗性能，一般适用于非频繁切换显示/隐藏
 
@@ -14,7 +58,7 @@ v-for和v-if的优先级
 
 通过源码可以知道，当v-for和v-if同时使用在一个标签上，在vue2里v-for的优先级是比v-if高的，vue3中v-if优先级更高。
 
-#### 对vuex的理解
+### 对vuex的理解
 
   vuex是用于`状态集中管理`和`数据共享`的，比如一些用户信息、token一般可以存储在vuex和localStorage，搭配使用。
 
@@ -26,7 +70,7 @@ v-for和v-if的优先级
 - getters   可以简化我们取vuex里面的数据，比如计算购物车的总价，类似于`计算属性`
 - modules  当我们的项目很大的时候，vuex里面的数据多了，就很难去阅读了，可以`分模块`，比如用户信息模块  新闻列表模块等
 
-#### vue中的路由导航守卫
+### vue中的路由导航守卫
 
 - 全局前置守卫
 
@@ -116,7 +160,7 @@ const UserDetails = {
 }
 ```
 
-##### 完整的导航解析流程
+#### 完整的导航解析流程
 
 1. 导航被触发。
 2. 在失活的组件里调用 `beforeRouteLeave` 守卫。
@@ -131,7 +175,7 @@ const UserDetails = {
 11. 触发 DOM 更新。
 12. 调用 `beforeRouteEnter` 守卫中传给 `next` 的回调函数，创建好的组件实例会作为回调函数的参数传入。
 
-#### keep-alive的使用
+### keep-alive的使用
 
 ```js
 <keep-alive includes="['Son']">  
@@ -142,14 +186,14 @@ const UserDetails = {
 </keep-alive>
 ```
 
-#### 有没有自定义过一些指令
+### 有没有自定义过一些指令
 
 - 一键copy文字
 - 图片加载不出来，显示默认图片
 - 表单自动获取焦点
 
 
-#### data、props、methods、watch、computed的优先级
+### data、props、methods、watch、computed的优先级
 
 `props` > `methods` > `data` > `computed` > `watch`
 
@@ -159,9 +203,9 @@ computed：当多个数据依赖一个数据的时候，用computed，具有缓�
 
 watch：当一个数据依赖多个数据的时候，用watch，watch里面可以执行异步代码，computed不行.
 
-#### 生命周期
+### 生命周期
 
-###### vue2:
+##### vue2:
 
 `beforeCreate=>created `
 
@@ -187,7 +231,7 @@ mounted 此时已经有DOM结构了，可以操作dom，但是不建议这么做
 
 beforeDestroy一般在这个钩子上，做一些收尾工作，比如==清除定时器==、==取消订阅==、==清除自定义事件==等.
 
-###### vue3:
+##### vue3:
 
 beforeDestroy 改为 beforeUnmount
 
@@ -197,7 +241,7 @@ destroyed 改为 unmounted
 >
 > vue3不会
 
-#### 对vue3有了解过吗
+### 对vue3有了解过吗
 
 vue3中响应式用到了ES6中的 `Proxy` 代理对象，但是对于基本数据类型，还是用了Object.defineProperty来做响应式。
 
@@ -221,7 +265,7 @@ vue3中的Proxy性能更好，因为proxy侦听的对象本身，而defineProert
 
 新增了 `ref`、`reactive` 函数
 
-#### vue3中做过哪些性能优化
+### vue3中做过哪些性能优化
 
 reatvie与shallowReactive的区分使用场景，当一个数据结构是深层次的，但要做响应式的只有第一层的话，可以用shallowReactive
 
@@ -239,7 +283,7 @@ exprot default {
 }
 ```
 
-#### vue中nextTick的作用与原理
+### vue中nextTick的作用与原理
 
 vue更新页面是采用了异步更新的，如果我们想要获取到最新的DOM，可以用vue给我们提供的nextTick，在它的回调里面可以拿到更新后的DOM元素,但是vue是不推荐我们直接操作DOM的,nextTick底层用了`promise.then`方法，如果浏览器不支持，就会使用`mutationObserver`、`setTimeout`
 
@@ -249,7 +293,7 @@ vue更新页面是采用了异步更新的，如果我们想要获取到最新�
 
   vue更新数据是异步更新的，当发现数据变更，会开启一个队列，推进这个队列，当多次数据变更只会推进一次，这样会减少一些不必要的更新和计算。
 
-#### Vue.use原理 
+### Vue.use原理 
 
 概念:
 
@@ -259,7 +303,7 @@ vue更新页面是采用了异步更新的，如果我们想要获取到最新�
 
 > 注意:该方法需要在调用new Vue() `之前` 被调用
 
-#### vue中的token持久化存储
+### vue中的token持久化存储
 
 vue中存储token，一般像token这样的数据都要做持久化的，我们都知道存储在本地localStorage里面的数据只有在用户主动去清除才会被清除的，是持久的，但是还有一个问题，存储在localStorage里的数据不是响应式的，我们可以也存一份到vuex里，我们可以借助一个插件-- `persistedstate` 来做token持久化。
 
@@ -278,11 +322,11 @@ plugins: [
 ]
 ```
 
-#### 当修改data时vue的组件重渲染是异步还是同步
+### 当修改data时vue的组件重渲染是异步还是同步
 
 vue更新数据是采用了异步策略的。当我们修改了数据，vue会开启一个队列，当多次触发修改数据，也只会被推进这个队列一次，因为这样可以避免不必要的计算更新视图，所以vue给我们提供了一个 `nextTick` 函数，它的回调里面可以拿到最新的dom。
 
-#### vue多组件嵌套通信方式
+### vue多组件嵌套通信方式
 
 eventBus 事件总线  `适用于任意组件间通信`
 
@@ -306,7 +350,7 @@ import { inject } from 'vue'
 const res = inject('事件名')   // res 得到的就是数据
 ```
 
-#### this.$off 源码
+### this.$off 源码
 
 ```js
 Vue.prototype.$off = function (event, fn) {
@@ -346,7 +390,7 @@ Vue.prototype.$off = function (event, fn) {
 };
 ```
 
-#### 为什么vue中methods对象this能到data里面的数据---原理
+### 为什么vue中methods对象this能到data里面的数据---原理
 
 ```ts
 function initMethods (vm, methods) {
@@ -381,7 +425,7 @@ function initMethods (vm, methods) {
 
 
 
-#### vue3的patch打补丁做了些什么
+### vue3的patch打补丁做了些什么
 
 - 对比新旧vNode的tag`标签`有没有改变，没有再对比的`props`有没有改变
 
@@ -419,18 +463,18 @@ if(oldVNode.tag === newVnode.tag){
 }
 ```
 
-#### vue3的细节
+### vue3的细节
 
 - compunted返回的是一个ref对象
 - watch不能直接侦听一个字符串/数字，需要侦听的是`ref`对象
 
-#### 函数式组件
+### 函数式组件
 
 - 优点：
   - `函数式组件` 不会有状态，不会有 `响应式数据` ，也没有自己的 `生命周期钩子` 这些东西，所以性能比普通组件性能要好。
   - `函数式组件` 和普通的对象类型的组件不同，它不会被看作成一个真正的组件，我们知道在 `patch` 过程中，如果遇到一个节点是组件的` vnode` ，会递归执行子组件的初始化过程；而函数式组件的 `render` 生成的是普通的 `vnode` ，不会又递归的子组件的过程，因此渲染开销会低很多。
 
-#### computed的细节
+### computed的细节
 
 ```js
 computed:{
@@ -445,7 +489,7 @@ computed:{
 
 这样就不会在组件刷新时重新获取`getter`了，这也是性能优化的一种手段。
 
-#### vue3的渲染机制
+### vue3的渲染机制
 
 - 渲染管线：
 
@@ -470,7 +514,7 @@ computed:{
 
   - 当这个组件需要重渲染时，只需要遍历这个打平的树而非整棵树。这也就是我们所说的**树结构打平**，这大大减少了我们在虚拟 DOM 协调时需要遍历的节点数量。模板中任何的静态部分都会被高效地略过。
 
-#### vue渲染流程
+### vue渲染流程
 
 `template` 模板 或 `render` 渲染函数转换成 `vnode`虚拟节点，然后通过`mountElement`函数渲染成`element`真实DOM，再 `append(#app)`
 
@@ -478,7 +522,7 @@ computed:{
 
 
 
-#### vue中的custom render
+### vue中的custom render
 
 - 简介：允许用户自定义目标渲染平台
 - 动机：不再局限于浏览器dom平台，可以把vue的开发模型扩展到其他平台。

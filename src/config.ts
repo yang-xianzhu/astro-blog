@@ -119,7 +119,7 @@ export const SIDEBAR: Sidebar = {
     ],
     数据结构与算法:[],
     源码:[
-      {text:'Vue',link:`blog/SourceCode/vue`}
+      {text:'Vue',link:`blog/SourceCode/vueCode`}
     ],
     工具库:[
       
