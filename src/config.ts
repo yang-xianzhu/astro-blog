@@ -103,7 +103,7 @@ export const SIDEBAR: Sidebar = {
       },
       { text: "你不知道的JS-上卷", 
       link: `blog/Book/YouDontKnowJS/Top` 
-    },
+      },
       {
         text: "你不知道的JS-中卷",
         link: `blog/Book/YouDontKnowJS/Middle`,
@@ -116,16 +116,14 @@ export const SIDEBAR: Sidebar = {
         text: "JavaScript设计模式",
         link: `blog/Book/DesignPatterns/JSDesgin`,
       },
+      {
+        text: "VueJs程序与设计",
+        link: `blog/Book/VueDesign/VueDesign`,
+      },
     ],
-    数据结构与算法:[],
-    源码:[
-      {text:'Vue',link:`blog/SourceCode/vueCode`}
-    ],
-    工具库:[
-      
-    ],
-    工程化:[
-      {text:'Node',link:`blog/Project/node`}
-    ]
+    数据结构与算法: [],
+    源码: [{ text: "Vue", link: `blog/SourceCode/vueCode` }],
+    工具库: [],
+    工程化: [{ text: "Node", link: `blog/Project/node` }],
   },
 };
