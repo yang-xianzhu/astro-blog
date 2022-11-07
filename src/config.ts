@@ -101,9 +101,7 @@ export const SIDEBAR: Sidebar = {
         text: "JavaScript高级程序设计-第四版",
         link: `blog/Book/RedBook/fourthEdition`,
       },
-      { text: "你不知道的JS-上卷", 
-      link: `blog/Book/YouDontKnowJS/Top` 
-      },
+      { text: "你不知道的JS-上卷", link: `blog/Book/YouDontKnowJS/Top` },
       {
         text: "你不知道的JS-中卷",
         link: `blog/Book/YouDontKnowJS/Middle`,

@@ -394,7 +394,148 @@ y = null  // y可以被垃圾回收
 
 > 注意：WeakSet的值必须是对象，而并不像Set一样可以是原生类型值。
 
-#### 小结
+#### 总结
 
 - Map是键-值对，其中的值不只是字符串/原生类型，也可以是对象。Set是成员值(任意类型)唯一的列表。
 - `WeakMap`也是`Map`，其中的键(对象)是**弱引用**的，因此当它是对这个对象的最后一个引用的时候，垃圾回收就可以回收这个项目了。`WeakSet`也是`Set`，其中的值是弱引用的，也就是说如果其中的项目是对这个对象最后一个引用的时候，就可以被垃圾回收掉。
+
+### Proxy-代理
+
+我们都知道`Vue3`不再采用`Object.defineProperty`来实现响应式系统了，取而代之的是ES6新增的`Proxy`代理。
+
+因为`Object.defineProperty`有众多缺点：
+
+- 需要手动去遍历对象绑定`Get`、`Set`，所以当数据结构很复杂时，还需要递归绑定，所以Vue2初始化`data`时会造成一定的性能损失。
+- 无法侦听到对象新增的属性，所以Vue2给我们提供了`$set`API。
+- 使用数组的`push`方法给数组增加的元素，`Set`方法无法监听得到。（但通过索引或者修改数组的已有的元素说可以触发`Get`、`Set`的，或者使用`pop`、`shift`删除元素也会触发`Get`、`Set`，因为这些方法会删除元素并更新索引）。
+
+> 所以Vue2是通过重写数组的那七个改变原数组的方法来实现修改数组实现响应的。
+
+相比ES6的Proxy代理来说，`Object.defineProperty`的好处就是兼用IE，但是如今IE已经走远了，所以尤大当时设计Vue3的时候选择ES6新增的Proxy真是艺高人胆大。
+
+以上说到的缺点，proxy都能解决，这就是proxy的强大之处。代理是一种由你创建的特殊对象，它**封装**另外一个普通对象，或者说挡在这个普通对象的前面。你可以在代理对象上注册特殊的处理函数，代理上执行各种操作的时候会调用这个程序。这些处理函数除了把操作转发给原始目标/被封装对象之外，还有机会执行额外的逻辑。
+
+`MDN`上这样定义`Proxy`：Proxy对象用于创建一个对象的代理，从而实现基本操作的拦截和自定义(比如**属性查找**、**赋值**、**枚举**、**函数调用**)等。
+
+#### 用法
+
+我们可以代理一个对象，当我们试图访问对象属性的时候，它拦截[[Get]]运算。
+
+```js
+const obj = { a: 1 };
+
+const handles = {
+  get(target, key, context) {
+    // target === obj
+    // context === p
+    console.log("监听到你读取的是:", key);
+    return Reflect.get(target, key, context);
+  },
+};
+
+const p = new Proxy(obj, handle);
+
+console.log(p.a)
+// 监听到你读取的是:a
+// 1     
+```
+
+我们在`handles`对象上声明了`get(...)`处理函数，它接受一个target对象的引用(这里是obj)、key属性名(这里是'a')以及接收者(这里是p)。
+
+除了`Get`操作，还有`Set`操作：
+
+```js
+const obj = { a: 1 };
+
+const handle = {
+  set(target, prop, value) {
+    console.log(`监听到你在修改obj对象中的:${prop}，要修改的值是:${value}`);
+    Reflect.set(target, prop, value);
+    // 表示成功
+    return true;
+  },
+};
+
+const p = new Proxy(obj, handle);
+
+p.a = 666;
+// 监听到你在修改obj对象中的:a，要修改的值是:666
+```
+
+#### Refect
+
+这里使用了Refect转发，你不知道的JavaScript-中卷这样定义它：它是持有对应于各种可控的元编程任务的静态函数。这些函数一对一对应着代理可以定义的处理函数方法。
+
+这些函数一部分看起来和Object上的同名函数类似：
+
+- Refect.getOwnPropertyDescriptor( ... )
+- Refect.defineProperty( ... )
+- Refect.getPrototypeof( ... )
+- Refect.setPrototypeof( ... )
+- Refect.preventExtenions( ... )
+- Reflect.isExtensible( ... )
+
+一般来说这些工具和Object.对应的工具行为方式类似。但是，有一个区别是如果第一个参数(即目标对象)不是对象的时候，Object.相应工具会试图把它类型转换为一个对象。而这种情况下，Refect.方法只会抛出一个错误。
+
+- Refect.get(...)：
+
+  举例：Refect.get( obj,'foo' )提取obj.foo
+
+- Refect.set(...)：
+
+  举例：Refect.set(obj,'foo',66)实际上就是执行`obj.foo = 66`
+
+Refect的元编程能力提供了模拟各种语法特性的编程等价物，把之前隐藏的抽象操作暴露出来。
+
+#### 代理的局限性
+
+以下一些操作无法被拦截：
+
+```js
+const obj ={ a:1,b:2 }
+const handles = {...}
+                
+const p = new Proxy(obj,handles)
+
+// 以下操作不会触发handles，并从代理p对象转发到目标obj上
+typeof obj
+String(obj)
+obj + ''
+obj == p
+obj === p
+```
+
+#### 可取消代理
+
+普通代理总是陷入到目标对象，并且在创建之后不能修改，只要还保持着对这个代理的引用，代理的机制就将维持下去。但是，可能会存在这样的情况，比如你想要创建一个在你想要停止它作为代理时便可以被停用的代理。那就可以使用**可取消代理**。
+
+```js
+const obj = { a: 1 };
+
+const handle = {
+  get(target, key, context) {
+    console.log(`监听到你在修改obj对象中的:${key}`);
+    Reflect.get(target, key, context);
+  },
+};
+
+const { proxy: p, revoke: prevoke } = Proxy.revocable(obj, handle);
+
+p.a; // 监听到你在修改obj对象中的:a
+
+prevoke()  // 取消代理
+p.a  // TypeError
+```
+
+可取消代理用`Proxy.revocable(...)`创建，这是一个普通函数，而不像`Proxy(...)`一样是构造器。除此之外，它接收的两个参数是：`target`和`handles`。
+
+和new Proxy(...)不一样，Proxy.revocable(...)的返回值不是代理本身。而是一个有两个属性，分别是`proxy`和`revoke`的对象，我们使用对象解构，把这两个属性分别赋值给了`p`和`prevoke`。
+
+一旦取消代理，任何对它的访问(触发他的任意trap：比如Get、Set)都会抛出TypeError。
+
+可取消代理的应用场景：在你的应用中把代理分发到第三方其中管理你的模型数据，而不是给出真实模型本身的引用，如果你的模型对象改变或者被替换，就可以使分发出去的代理失效/取消，这样第三方能够知晓变化并请求更新到这个模型的引用。
+
+#### 小结
+
+1. Proxy通常搭配`Refect`一起使用（Vue3源码中也使用到）。
+2. Proxy的出现，正好解决了`Object.defineProperty`的众多缺点。
