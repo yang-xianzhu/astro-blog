@@ -407,7 +407,6 @@ y = null  // y可以被垃圾回收
 
 - 需要手动去遍历对象绑定`Get`、`Set`，所以当数据结构很复杂时，还需要递归绑定，所以Vue2初始化`data`时会造成一定的性能损失。
 - 无法侦听到对象新增的属性，所以Vue2给我们提供了`$set`API。
-- 使用数组的`push`方法给数组增加的元素，`Set`方法无法监听得到。（但通过索引或者修改数组的已有的元素说可以触发`Get`、`Set`的，或者使用`pop`、`shift`删除元素也会触发`Get`、`Set`，因为这些方法会删除元素并更新索引）。
 
 > 所以Vue2是通过重写数组的那七个改变原数组的方法来实现修改数组实现响应的。
 
@@ -462,30 +461,30 @@ p.a = 666;
 // 监听到你在修改obj对象中的:a，要修改的值是:666
 ```
 
-#### Refect
+#### Reflect
 
-这里使用了Refect转发，你不知道的JavaScript-中卷这样定义它：它是持有对应于各种可控的元编程任务的静态函数。这些函数一对一对应着代理可以定义的处理函数方法。
+这里使用了Reflect转发，你不知道的JavaScript-中卷这样定义它：它是持有对应于各种可控的元编程任务的静态函数。这些函数一对一对应着代理可以定义的处理函数方法。
 
 这些函数一部分看起来和Object上的同名函数类似：
 
-- Refect.getOwnPropertyDescriptor( ... )
-- Refect.defineProperty( ... )
-- Refect.getPrototypeof( ... )
-- Refect.setPrototypeof( ... )
-- Refect.preventExtenions( ... )
+- Reflect.getOwnPropertyDescriptor( ... )
+- Reflect.defineProperty( ... )
+- Reflect.getPrototypeof( ... )
+- Reflect.setPrototypeof( ... )
+- Reflect.preventExtenions( ... )
 - Reflect.isExtensible( ... )
 
-一般来说这些工具和Object.对应的工具行为方式类似。但是，有一个区别是如果第一个参数(即目标对象)不是对象的时候，Object.相应工具会试图把它类型转换为一个对象。而这种情况下，Refect.方法只会抛出一个错误。
+一般来说这些工具和Object.对应的工具行为方式类似。但是，有一个区别是如果第一个参数(即目标对象)不是对象的时候，Object.相应工具会试图把它类型转换为一个对象。而这种情况下，Reflect.方法只会抛出一个错误。
 
-- Refect.get(...)：
+- Reflect.get(...)：
 
-  举例：Refect.get( obj,'foo' )提取obj.foo
+  举例：Reflect.get( obj,'foo' )提取obj.foo
 
-- Refect.set(...)：
+- Reflect.set(...)：
 
-  举例：Refect.set(obj,'foo',66)实际上就是执行`obj.foo = 66`
+  举例：Reflect.set(obj,'foo',66)实际上就是执行`obj.foo = 66`
 
-Refect的元编程能力提供了模拟各种语法特性的编程等价物，把之前隐藏的抽象操作暴露出来。
+Reflect的元编程能力提供了模拟各种语法特性的编程等价物，把之前隐藏的抽象操作暴露出来。
 
 #### 代理的局限性
 
@@ -537,5 +536,5 @@ p.a  // TypeError
 
 #### 小结
 
-1. Proxy通常搭配`Refect`一起使用（Vue3源码中也使用到）。
+1. Proxy通常搭配`Reflect`一起使用（Vue3源码中也使用到）。
 2. Proxy的出现，正好解决了`Object.defineProperty`的众多缺点。
