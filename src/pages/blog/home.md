@@ -4,7 +4,6 @@ description: Docs intro
 # 表示要把md内容放到哪个页面结构里面去
 layout: ../../layouts/MainLayout.astro
 ---
-<!-- <img src="/middle.jpg" alt="头像" > -->
 
 ## 记录学习
 
@@ -13,11 +12,12 @@ layout: ../../layouts/MainLayout.astro
 ## **学习清单**
 #### 1、书籍系列
 - ✅ **红宝书**
-- ❎ **你不知道的JavaScript系列**
+- ✅ **你不知道的JavaScript系列**
 - ❎ **CSS世界**
 - ❎ **JavaScript设计模式**
 - ❎ **学习JavaScript数据结构与算法**
 - ❎ **图解HTTP**
+- ❎ **Vuejs设计与实现**
 #### 2、技术
 - ❎ **学习vue3源码：mini-vue**
 - ❎ **TypeScript的进阶使用**
