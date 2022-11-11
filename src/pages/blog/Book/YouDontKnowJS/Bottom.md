@@ -163,12 +163,6 @@ const vals = [ ...m.values() ]
 
 vals  // ['zxy','zxc']
 Array.from( m.values() )  // ['zxy','zxc']
-
-vals[0][0] === x  // true
-vlas[0][1]   // 'zxy'
-
-vals[1][0] === y  // true
-vlas[1][1]   // 'zxc'
 ```
 
 ##### Map键
