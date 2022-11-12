@@ -10,7 +10,7 @@ layout: ../../../layouts/MainLayout.astro
 
 ### 父子组件的渲染顺序（vue2）
 
-- 同步
+- 同步组件
 
   - 加载阶段
 
@@ -30,7 +30,7 @@ layout: ../../../layouts/MainLayout.astro
   父beforeDestroy->子beforeDestroy->子destroyed->父destroyed
   ```
 
-- 异步 即通过 `()=> import('...')`方式引入组件
+- 异步组件 即通过 `()=> import('...')`方式引入组件
 
   - 加载阶段
 

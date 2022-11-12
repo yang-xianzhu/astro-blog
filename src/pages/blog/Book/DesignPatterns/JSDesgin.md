@@ -255,7 +255,7 @@ console.log(res1)   // 数字是:1111
 
 比如我们有一个列表，是ul>li这样的结构，如果我们需要给每个li绑定事件的话，然后执行某些业务逻辑的话，我们可能第一个想的就是循环遍历li，然后逐一绑定事件，比如：
 
-```
+```js
 // 获取ul下的所有li
 const lis = docuemnt.querySelectorAll('ul>li')
 
@@ -271,7 +271,7 @@ for(let i=0,_len = lis.length;i<_len;i++){
 
 我们只需要为父元素(这里指的是ul)绑定一个事件，将子元素的事件委托给父元素，然后利用**事件冒泡**传递，然后通过**判断事件源的某种特性**来执行你的业务逻辑。
 
-```
+```js
 // 获取ul
 const ul = docuemnt.querySelector('ul')
 
@@ -292,7 +292,7 @@ ul.onclick = function(e){
 
 比如还是以上面那个例子来演示事件委托的"预见未来"性:
 
-```
+```js
 // 如下DOM结构
 <ul>
   <li>li1</li>
@@ -329,7 +329,7 @@ for(let i=0,_len = lis.length;i<_len;i++){
 
 有时候委托模式不仅能在性能上有一定的优越性，它还能处理一些内存泄露问题，是因为老版本的IE浏览器，由于它的**引用计数式**垃圾回收机制，使得那些DOM元素的引用没有显性清除的数据会遗留在内存中，除非关闭浏览器，否则无法清除。比如以下：
 
-```
+```js
 <div id="contaniner">
   <button id="btn">Test</button>
 </div>
@@ -344,7 +344,7 @@ G('btn').onclick = function(){
 
 为id为btn的元素绑定点击事件,在触发时，在其父元素中重置了内容，这样将会将按钮自身覆盖掉，然而G变量保存的元素绑定的click事件并没有被清除，所以这个事件就会泄露到内存中。为了解决这个问题，我们可以在父元素设置内容前显性地清清除事件。比如：
 
-```
+```js
 G('btn').onclick = function(){
   // 手动清除btn绑定的事件
   G('btn').onclick = null
@@ -354,7 +354,7 @@ G('btn').onclick = function(){
 
 但是对于其他一些使用**标记清除方式**的垃圾回收机制的浏览器并不需要我们手动去清除。所以更好的解决方法是采用**委托模式**了。
 
-```
+```js
 G('contaniner').onclick = function(e){
   const tar = e.target || window.event.srcElement
   if(tar.id === 'btn'){
@@ -371,7 +371,7 @@ G('contaniner').onclick = function(e){
 #### 练习
 
 用委托模式封装一个事件委托方法，事件委托方法使用如下：
-```
+```js
 // 使用方法
 delegate(document.body,'button','click',function(){
   console.log('委托成功！')
