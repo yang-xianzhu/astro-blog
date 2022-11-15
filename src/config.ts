@@ -115,7 +115,7 @@ export const SIDEBAR: Sidebar = {
         link: `blog/Book/DesignPatterns/JSDesgin`,
       },
       {
-        text: "VueJs程序与设计",
+        text: "VueJs设计与实现",
         link: `blog/Book/VueDesign/VueDesign`,
       },
     ],
