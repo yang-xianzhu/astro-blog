@@ -3,6 +3,87 @@ title: Vue
 description: Vue面试题
 layout: ../../../layouts/MainLayout.astro
 ---
+### vue3中的props
+```js
+// 挂载或更新组件
+function mountComponent(vnode,container,anchor){
+  const componentOptions = vnode.type
+  const {render,data,props:propsOption,beforeCreate} = componentOptions
+  // 调用组件创建前钩子
+  beforeCreate && beforeCreate()
+  // 取data()函数里的返回值，利用reactive函数进行响应式处理
+  const state = reactive(data())
+  // 调用 resolveProps 函数解析出最终的 props 数据与 attr 数据
+  const [props,attrs] = resolveProps(propsOption,vnode.props)
+  const instance = {
+    state,
+    // 将解析出来的props进行数据包装为 shllowReactive/进行浅层次响应数据
+    isMounted:false, // 是否已经挂载了
+    subTree:null // 存储上一次的数据，用于对比更新
+  }
+  vnode.component = instance
+}
+// 用于解析组件的porps和attrs数据
+function resolveProps(options,propsData){
+  const props = {}
+  const attrs = {}
+
+  // 遍历组件传递的props数据进行区分
+  for(const k in propsData){
+    // 如果父组件传递给子组件的数据，如果子组件没有定义接收，则存储到attrs对象里
+    if(k in options){
+      props[k] = propsData[k]
+    }else{
+      attrs[k] = propsData[k]      
+    }
+  }
+  // 返回props 与 attrs 数据
+  return [props,attrs]
+}
+```
+> 在vue3中，子组件没有定义props，父组件传递过来的数据将存储到**attrs**对象中。而且props进行数据包装为 shllowReactive/进行浅层次响应数据。
+
+props本质上是父组件的数据，所以当props发生改变时，会触发父组件重新渲染。**由父组件子更新所引起的子组件更新叫作被动更新。当子组件发生被动更新时，需要做：**
+
+-   检测子组件是否真的需要更新，因为子组件的props可能是不变的。
+-   如果需要更新，则更新子组件的**props、slots**等内容。
+
+组件更新封装了一个patchComponent函数：
+```js
+function patchComponent(n1,n2,anchor){
+  // 先获取组件实例
+  const instance = (n2.component = n1.component)
+  // 获取当前的 props 数据
+  const { props } = instance
+  // 调用 hasPropsChanged 函数检测父组件给子组件传递的 props 是否发生变化了，如果没有变化，就不要更新
+  if(hasPropsChanged(n1.props,n2.props)){
+    // 重新获取最新的props 数据
+    const [nextProps] = resolveProps(n2.type.props,n2.props)
+    // 更新props
+    for(const k in nextProps){
+      props[k] = nextProps[k]
+    }
+    // 删除不存在的props：如果旧的props不存在新的props里面则删除旧的props
+    for(const k in props){
+      if(!(k in nextProps[k])) delete props[k]
+    }
+  }
+}
+
+function hasPropsChanged(prevProps,nextProps){
+  const nextKeys = Object.keys(nextProps)
+  // 先判断数量上有没有变化，如果数量上有变化，则一定是需要更新的，就不用再进行下面的遍历了
+  if(nextKeys.length !== Object.keys(prevProps).length){
+    return true
+  }
+  // 如果上一个props的任意一个key和最新的props的key不一样，则也需要更新
+  for(let i = 0; _len = nextKeys.length , i<_len ;i++){
+    const key = nextKeys[i]
+    if(nextProps[key] !== prevProps[key]) return true
+  }
+  return false
+}
+```
 
 ### 说说虚拟DOM
 
