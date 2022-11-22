@@ -50,14 +50,6 @@ export type Sidebar = Record<
 
 export const SIDEBAR: Sidebar = {
   en: {
-    // "": [
-    //   // { text: "首页", link: `blog/home` },
-    //   // { text: "面试题", link: `blog/interview-uestions` },
-    //   // { text: "源码", link: `blog/source-code` },
-    //   // { text: "算法", link: `blog/algorithm` },
-    //   // { text: "工具库", link: `blog/tool-library` },
-    //   // { text: "工程化", link: `blog/engineering` },
-    // ],
     面试题: [
       {
         text: "前端基础",
@@ -119,7 +111,10 @@ export const SIDEBAR: Sidebar = {
         link: `blog/Book/VueDesign/VueDesign`,
       },
     ],
-    数据结构与算法: [],
+    数据结构与算法: [
+      { text: "数据结构", link: `blog/DataAndAlgorithms/data` },
+      { text: "算法", link: `blog/DataAndAlgorithms/algorithms` }
+    ],
     源码: [{ text: "Vue", link: `blog/SourceCode/vueCode` }],
     工具库: [],
     工程化: [{ text: "Node", link: `blog/Project/node` }],
