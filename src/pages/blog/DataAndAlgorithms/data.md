@@ -87,6 +87,54 @@ class Stack {
   }
 }
 ```
+### 利用WeakMap创建栈
+
+`WeakMap`可以存储键值对，其中键是对象，值可以是任意数据类型。
+
+```js
+const items = new WeakMap()
+
+class Stack{
+  constructor(){
+    items.set(this,[])
+  }
+  push(item){
+   const e = items.get(this)
+   e.push(item)
+  }
+  pop(){
+   const e = items.get(this)
+   return e.pop()
+  }
+  // ...
+}
+```
+
+### 用栈解决问题
+
+栈的时机应用非常广泛。在**回溯**问题中，它可以存储访问过的任务或路径、撤销的操作。
+
+##### 利用栈实现从十进制到二进制的转换
+
+```js
+function decimalToBinary(decNumber){
+  const stack = new Stack()
+  let number = decNumber
+  let rem,
+      bomaryString = ''
+  while(number > 0){
+    rem = Math.floor( number % 2 )
+    stack.push(rem)
+    number = Math.floor( number / 2)
+  }
+  while( !stack.isEmpty()){
+    bomaryString += stack.pop().toString()
+  }
+}
+
+decimalToBinary(10)   // 1010
+```
+
 ## 队列和双端队列
 
 ### 队列

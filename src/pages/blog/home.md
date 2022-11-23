@@ -14,10 +14,10 @@ layout: ../../layouts/MainLayout.astro
 - ✅ **红宝书**
 - ✅ **你不知道的JavaScript系列**
 - ❎ **CSS世界**
-- ❎ **JavaScript设计模式**
+- ✅ **JavaScript设计模式**
 - ❎ **学习JavaScript数据结构与算法**
 - ❎ **图解HTTP**
-- ❎ **Vuejs设计与实现**
+- ✅ **Vuejs设计与实现**
 #### 2、技术
 - ❎ **学习vue3源码：mini-vue**
 - ❎ **TypeScript的进阶使用**

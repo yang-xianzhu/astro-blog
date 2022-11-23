@@ -115,6 +115,11 @@ a {
   gap: 0.5rem;
 }
 
+/* 中心区域 */
+#article a{
+  color:rgb(145, 109, 213);
+}
+
 article > section :is(ul, ol) > * + * {
   margin-top: 0.75rem;
 }

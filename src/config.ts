@@ -116,7 +116,9 @@ export const SIDEBAR: Sidebar = {
       { text: "算法", link: `blog/DataAndAlgorithms/algorithms` }
     ],
     源码: [{ text: "Vue", link: `blog/SourceCode/vueCode` }],
-    工具库: [],
+    工具库: [
+       {text:"动画库", link: `blog/ToolLibrary/animation` }
+    ],
     工程化: [{ text: "Node", link: `blog/Project/node` }],
   },
 };
