@@ -122,4 +122,74 @@ npm install [包名] --save-dev / -D
 npm install [包名] --save / -S
 ```
 
+## 项目配置
+
+#### 初始化项目
+
+npm init -y：所有配置都使用默认配置。
+
+#### 项目配置
+
+##### pageage.json文件
+
+###### private属性：
+
+记录当前的项目是否是私有的。当值为true时，npm是不能发布它的，这是防止私有项目或模块发布出去的方式。
+
+###### main属性：
+
+设置程序的入口，如果有main属性，实际上是**找到对应的main属性查找文件的**。
+
+###### scripts属性：
+
+- **scripts属性用于配置一些脚本命令**，以**键值对**的形式存在
+- 配置后我们可以通过**npm run**命令的key来执行这个命令
+- npm start 和 npm run start的区别是什么？
+  - 它们是等价的
+  - 对于常用的start、test、stop、restart可以省略掉run通过npm start等方式运行
+
+###### dependencies属性：
+
+-  dependencies属性是**指定无论开发环境还是生成环境都需要依赖的包**
+- 通常是我们项目实际开发用到的一些库的模块vue、pina、vue-router、axios等
+- 生产所需要的依赖
+
+###### devDependencies属性
+
+- 一些包**在生产环境是不需要的，比如webpack、babel等**
+- 这些时候我们会通过**npm install  包名 --save-dev**或**npm install 包名 -D**，将它安装到devDependencies属性中
+- 开发所需要的依赖
+
+###### peerDependencies属性：
+
+- 还有一种项目依赖关系是**对等依赖**，也就是**你依赖的一个包，它必须是以另外一个宿主包为前提的**
+- 比如element-plus是依赖于vue3的，ant Design是依赖于react、react-dom
+
+###### engines属性：
+
+- engines属性**用于指定Node和NPM的版本号*
+- 在安装的过程中，**会先检查对应的引擎版本，如果不符合就会报错**
+- 事实上也可以指定所在的操作系统"os":["darwin","linux"]，但很少用到
+
+browserslist属性：
+
+- 用于配置打包后到JavaScript浏览器到兼容情况。
+- 否则我们需要手动的添加polyfills来让支持某些语法。
+- 也就是说它是为了webpack等打包工具服务的一个属性
+
+###### 依赖的版本管理
+
+- semver版本规范是X.Y.Z：
+  - `X主版本号`：当你做了不兼容的API修改（可能不兼容之前的版本）
+  - `Y次版本号`：当你做了向下兼容的功能性新增（新功能增加，但是兼容之前的版本）
+  - `Z修订号`：当你做了向下兼容的问题修正（没有新功能，修复了之前版本的bug）
+- `^`和 `~`的区别：
+  - x.y.z：表示**一个明确的版本号**。
+  - ^x.y.z：表示**x是保持不变**的，**y和z永远安装最新的版本**。
+  - ~x.y.z：表示**x和y保持不变**的，**z永远安装最新的版本**。
+
+
+
+
+
 
