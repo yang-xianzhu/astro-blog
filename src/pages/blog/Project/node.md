@@ -9,7 +9,7 @@ layout: ../../../layouts/MainLayout.astro
 1. 注册npm账号 ---[ npm官网](https://www.npmjs.com/)
 2. 使用**nrm**或者**yrm**来快速切换镜像源，推荐使用**yrm**
 
-- 手动npm切换为默认源
+- - 手动npm切换为默认源
 
 ```shell
 npm config set registry https://registry.npmjs.org
@@ -95,16 +95,21 @@ npm v [包名] versions
 
 ## npm发布包
 
-1. 本地登录
+1. 本地登录：`npm login`
 2. 每次发布前，修改版本号
 
 ```shell
 npm version [版本号]
 ```
 
-1. `npm publish`
+3. 发布：`npm publish`
+4. 更新：
+   1. 修改版本号（最好复合semver规范）
+   2. 重新发布：`npm publish`
 
-注意：使用淘宝源会报错，需要改回默认源。
+删除发布的包：`npm unpublish`
+
+> 注意：使用淘宝源会报错，需要改回默认源。
 
 ## 查看当前镜像源的延迟
 
@@ -130,7 +135,7 @@ npm init -y：所有配置都使用默认配置。
 
 #### 项目配置
 
-##### pageage.json文件
+##### package.json文件
 
 ###### private属性：
 
@@ -188,8 +193,53 @@ browserslist属性：
   - ^x.y.z：表示**x是保持不变**的，**y和z永远安装最新的版本**。
   - ~x.y.z：表示**x和y保持不变**的，**z永远安装最新的版本**。
 
+##### 安装npm包
 
+- 全局安装：npm install 包名 -g
+- 项目（局部）安装：npm install 包名，此时包会自动安装到文件夹下的`node_modules`下
 
+##### package-lock.json文件解析
 
+- name：项目名称
+- version：项目版本
+- lockfileVersion：lock文件版本
+- requires：使用requires来跟踪模块的依赖关系
+- dependencies：项目的依赖
+  - 比如当前项目依赖axios，但是axios依赖follow-redireacts
+  - axios中的属性如下：
+  - `version`：表示实际安装的axios的版本
+  - `resolved`：用来记录下载的地址，registry仓库中的位置
+  - `requires/dependcies`：记录当前模块的依赖
+  - `integrity`：用来从缓存中获取索引，再通过索引去获取压缩包文件（**安装包的时候会优先利用这个字段去缓存里找，找不到再去`resolved`里下载**）
 
+## npm install的原理
 
+![npm install原理.drawio.png](/npm%20install%E5%8E%9F%E7%90%86.drawio.png)
+
+##### npm命令
+
+官网文档：https://docs.npmjs.com/cli-documentation/cli
+
+- `npm rebuild`：重新构建node_modules包
+
+- `npm cache clean`：清除缓存
+
+## npm镜像
+
+- 查看npm镜像：`npm config get registry`
+- 设置npm镜像：
+  - 淘宝镜像：`npm config set registry https://registry.npm.taobao.org`
+  - 默认镜像：`npm config set registry https://registry.npmjs.org`
+
+## npx
+
+```json
+// package.json
+“scripts”:{
+  "build":"webpack"
+}
+```
+
+上面的代码执行脚本build执行流程是：
+
+首先去`node_modules`下的`.bin`文件找到webpack文件执行，也可以自己手动在终端先切换到`node_modules`下的`.bin`文件并执行`npx  webpack`。
