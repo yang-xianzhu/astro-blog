@@ -90,6 +90,10 @@ export const SIDEBAR: Sidebar = {
     ],
     书籍: [
       {
+        text: "CSS新世界",
+        link: `blog/Book/CSS/NewWorld`,
+      },
+      {
         text: "JavaScript高级程序设计-第四版",
         link: `blog/Book/RedBook/fourthEdition`,
       },
@@ -113,12 +117,13 @@ export const SIDEBAR: Sidebar = {
     ],
     数据结构与算法: [
       { text: "数据结构", link: `blog/DataAndAlgorithms/data` },
-      { text: "算法", link: `blog/DataAndAlgorithms/algorithms` }
+      { text: "算法", link: `blog/DataAndAlgorithms/algorithms` },
     ],
     源码: [{ text: "Vue", link: `blog/SourceCode/vueCode` }],
-    工具库: [
-       {text:"动画库", link: `blog/ToolLibrary/animation` }
+    工具库: [{ text: "动画库", link: `blog/ToolLibrary/animation` }],
+    工程化: [
+      { text: "Node", link: `blog/Project/node` },
+      { text: "Vite", link: `blog/Project/vite` },
     ],
-    工程化: [{ text: "Node", link: `blog/Project/node` }],
   },
 };
