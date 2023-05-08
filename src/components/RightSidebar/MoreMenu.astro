@@ -1,9 +1,9 @@
 ---
-import ThemeToggleButton from './ThemeToggleButton';
-import * as CONFIG from '../../config';
+import ThemeToggleButton from "./ThemeToggleButton";
+import * as CONFIG from "../../config";
 
 type Props = {
-	editHref: string;
+  editHref: string;
 };
 
 const { editHref } = Astro.props as Props;
@@ -61,15 +61,15 @@ const showMoreSection = CONFIG.COMMUNITY_INVITE_URL;
 		</li>
 	)}
 </ul> -->
-<div style="margin: 2rem 0; text-align: center;">
-	<ThemeToggleButton client:visible />
+<div style='margin: 2rem 0; text-align: center;'>
+  <ThemeToggleButton client:idle />
 </div>
 
 <style>
-	.edit-on-github {
-		text-decoration: none;
-		font: inherit;
-		color: inherit;
-		font-size: 1rem;
-	}
+  .edit-on-github {
+    text-decoration: none;
+    font: inherit;
+    color: inherit;
+    font-size: 1rem;
+  }
 </style>

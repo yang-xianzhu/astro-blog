@@ -1,6 +1,7 @@
 import type { FunctionalComponent } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import "./ThemeToggleButton.css";
+import { usePreferredDark } from "../../hooks/usePreferredDark";
 
 const themes = ["light", "dark"];
 
@@ -30,6 +31,8 @@ const icons = [
 ];
 
 const ThemeToggle: FunctionalComponent = () => {
+  const { isDark, setDark } = usePreferredDark();
+
   const [theme, setTheme] = useState(() => {
     if (import.meta.env.SSR) {
       return undefined;
@@ -37,7 +40,7 @@ const ThemeToggle: FunctionalComponent = () => {
     if (typeof localStorage !== undefined && localStorage.getItem("theme")) {
       return localStorage.getItem("theme");
     }
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    if (isDark) {
       return "dark";
     }
     return "light";
@@ -52,11 +55,16 @@ const ThemeToggle: FunctionalComponent = () => {
     }
   }, [theme]);
 
+  useEffect(() => {
+    setTheme(() => (isDark ? "dark" : "light"));
+  }, [isDark]);
+
   return (
     <div className='theme-toggle'>
       {themes.map((t, i) => {
         const icon = icons[i];
-        const checked = t === theme;
+        const checked = t === (isDark ? "dark" : "light");
+
         return (
           <label className={checked ? " checked" : ""}>
             {icon}
@@ -70,6 +78,7 @@ const ThemeToggle: FunctionalComponent = () => {
               onChange={() => {
                 localStorage.setItem("theme", t);
                 setTheme(t);
+                setDark(t === "dark");
               }}
             />
           </label>

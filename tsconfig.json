@@ -3,9 +3,10 @@
   "compilerOptions": {
     "jsx": "preserve",
     "skipLibCheck": true,
-    // "baseUrl": ".",
-    // "paths": {
-    //   "@": ["src/"],
-    // }
+    "target": "ESNext",
+    "baseUrl": ".",
+    "paths": {
+      "@": ["src/"]
+    }
   }
 }
