@@ -1,8 +1,10 @@
 import { useState, useEffect } from "preact/hooks";
+import { localStorageKey } from "src/constant/key";
+
 const MediaQuery = "(prefers-color-scheme: dark)";
 
 // 获取当前系统主题色
-export const usePreferredDark = () => {
+export const usePreferredColor = () => {
   const [isDark, setDark] = useState(true);
 
   const changeLocalStorageTheme = () => {
@@ -10,7 +12,7 @@ export const usePreferredDark = () => {
     const t = isDark ? "dark" : "light";
 
     setDark(() => isDark);
-    localStorage.setItem("theme", t);
+    localStorage.setItem(localStorageKey.Theme_Key, t);
   };
 
   const update = () => {
