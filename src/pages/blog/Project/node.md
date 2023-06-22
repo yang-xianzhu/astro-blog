@@ -588,3 +588,45 @@ $ npm config set foo:port 80
 // 构建 favicon
 "build:favicon": "node scripts/favicon.js",
 ```
+
+##### Mac 中使用 n 管理 Node 版本
+
+1.  清除 Node 缓存：`sudo npm cache clean -f`
+
+2.  全局安装`n`：`npm install n -g`
+
+3.  查看 n 的版本号：`n -V`
+
+4.  使用 n 管理 Node
+
+- 查看 Node 的列表 `n ls`
+
+- 安装指定 Node 版本
+  - 查看官网 node 版本`npm view node versions`
+  - 安装指定 node 版本：`n node版本`，如：`n 18.16.0`
+
+5.  切换 Node 版本（Mac 需要加权限 sudo）
+
+- 首先执行`sudo n`，通过上下键进行切换选择，最后 enter 键选中版本。
+- 如果选中后还是原来的版本，则使用`sudo n`，后通过上下键切换选择版本。
+
+6.  删除指定版本 Node 运行命令
+
+- `sudo rm Node版本号`
+- `sudo npm uninstall n -g`
+
+7.  卸载 n 执行
+
+- `npm uninstall n -g`
+- `sudo npm uninstall n -g`
+
+8.  Node 版本展示
+
+- 列出最新的 Node 版本`n ls-remote`
+- 列出 18x 版本`n ls-remote 18`
+
+9.  安装版本
+
+- 安装最新正式发布版本 `sudo n latest`
+- 安装最新的长期支持正式发布版本 `sudo n lts`
+- 安装指定版本 `sudo n 18.16.0`
