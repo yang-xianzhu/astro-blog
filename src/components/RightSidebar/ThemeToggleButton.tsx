@@ -33,6 +33,7 @@ const icons = [
 
 const ThemeToggle: FunctionalComponent = () => {
   const { isDark, setDark } = usePreferredColor();
+  const isAuto = JSON.parse(localStorage.getItem(localStorageKey.IS_AUTO))
 
   const [theme, setTheme] = useState(() => {
     if (import.meta.env.SSR) {
@@ -40,9 +41,9 @@ const ThemeToggle: FunctionalComponent = () => {
     }
     if (
       typeof localStorage !== undefined &&
-      localStorage.getItem(localStorageKey.Theme_Key)
+      localStorage.getItem(localStorageKey.THEME_KEY)
     ) {
-      return localStorage.getItem(localStorageKey.Theme_Key);
+      return localStorage.getItem(localStorageKey.THEME_KEY);
     }
     if (isDark) {
       return "dark";
@@ -52,11 +53,14 @@ const ThemeToggle: FunctionalComponent = () => {
 
   useEffect(() => {
     const root = document.documentElement;
+
+
     if (theme === "light") {
       root.classList.remove("theme-dark");
     } else {
       root.classList.add("theme-dark");
     }
+
   }, [theme]);
 
   useEffect(() => {
@@ -80,7 +84,12 @@ const ThemeToggle: FunctionalComponent = () => {
               title={`Use ${t} theme`}
               aria-label={`Use ${t} theme`}
               onChange={() => {
-                localStorage.setItem(localStorageKey.Theme_Key, t);
+
+                if (!isAuto) {
+                  localStorage.setItem(localStorageKey.IS_AUTO, 'true')
+                }
+
+                localStorage.setItem(localStorageKey.THEME_KEY, t);
                 setTheme(t);
                 setDark(t === "dark");
               }}
