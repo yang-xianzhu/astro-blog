@@ -18,7 +18,7 @@ export const usePreferredColor = () => {
   const update = () => {
     changeLocalStorageTheme();
     setDark(() => window.matchMedia(MediaQuery).matches);
-    localStorage.setItem(localStorageKey.IS_AUTO, "false");
+    // localStorage.setItem(localStorageKey.IS_AUTO, "false");
   };
 
   useEffect(() => {

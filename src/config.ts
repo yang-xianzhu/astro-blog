@@ -1,3 +1,5 @@
+import { usePreferredColor } from "./hooks/usePreferredColor";
+
 export const SITE = {
   title: "前端博客",
   description: "yxz的个人博客",

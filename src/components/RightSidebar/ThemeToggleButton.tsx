@@ -33,7 +33,7 @@ const icons = [
 
 const ThemeToggle: FunctionalComponent = () => {
   const { isDark, setDark } = usePreferredColor();
-  const isAuto = JSON.parse(localStorage.getItem(localStorageKey.IS_AUTO))
+  // const isAuto = JSON.parse(localStorage.getItem(localStorageKey.IS_AUTO))
 
   const [theme, setTheme] = useState(() => {
     if (import.meta.env.SSR) {
@@ -85,9 +85,9 @@ const ThemeToggle: FunctionalComponent = () => {
               aria-label={`Use ${t} theme`}
               onChange={() => {
 
-                if (!isAuto) {
-                  localStorage.setItem(localStorageKey.IS_AUTO, 'true')
-                }
+                // if (!isAuto) {
+                //   localStorage.setItem(localStorageKey.IS_AUTO, 'true')
+                // }
 
                 localStorage.setItem(localStorageKey.THEME_KEY, t);
                 setTheme(t);

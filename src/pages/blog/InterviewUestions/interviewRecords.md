@@ -26,7 +26,7 @@ layout: ../../../layouts/MainLayout.astro
 
 #### vue2 的响应式原理是什么
 
-vue2 响应式原理使用到了 ES6 的`Object.defineProperty`来对数据的劫持，进而实现数据的双向绑定。
+vue2 响应式原理使用到了 ES5 的`Object.defineProperty`来对数据的劫持，进而实现数据的双向绑定。
 
 当我们定义在 data 里面的数据，vue 底层帮我们使用到了 defineProperty 来给数据绑定`get`和`set`，但读取属性时，会触发 get 这个方法，当修改属性时，会触发 set 这个方法，对于一些深层次的结构对象，需要使用递归来遍历每个属性，所以初始化是比较损失性能的。这个方法是不能够侦听到数据的变化的，但是可以使用到 vue 给我们重写了那七个改变原数组的方法来实现修改数据响应页面，push、pop、unshift、shift、sort、reverse、splice 方法。同时给对象后添加新的属性和删除属性，是没有响应式的。可以使用 vue 给我们提供的$set 方法。
 
