@@ -315,7 +315,7 @@ git show <commitId> # 查看 commitId 信息
 git show --stat <commitId> # 查看 commitId 修改文件信息
 ```
 
-- ##### 打包‘
+- ##### 打包
 
 ```sh
 git archive --format=zip --o master.zip master. # 用zip方式打包master分支代码
@@ -331,3 +331,5 @@ git archive --format=zip --o master.zip master. # 用zip方式打包master分支
 git checkout <branch> --filename : # 将 dev 分支的 filename 检出到当前分支
 git command --help # 查看命令详情 command命令
 ```
+
+#### 更改远程分支名称
