@@ -20,6 +20,7 @@ layout: ../../layouts/MainLayout.astro
 - ✅ **学习 JavaScript 数据结构与算法**
 - ❎ **图解 HTTP**
 - ✅ **Vuejs 设计与实现**
+- ❎ **重构**
 
 #### 2、技术
 
@@ -29,7 +30,6 @@ layout: ../../layouts/MainLayout.astro
 
 #### 3、小册
 
-- ✅ **JavaScript 函数式编程实践指南**
 - ✅ **JavaScript 函数式编程实践指南**
 - ✅ **基于 Vite 的组件库工程化实战**
 - ✅ **深入浅出 Vite**
