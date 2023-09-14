@@ -116,14 +116,16 @@ export const SIDEBAR: Sidebar = {
         text: "VueJs设计与实现",
         link: `blog/Book/VueDesign/VueDesign`,
       },
+      {
+        text: "重构",
+        link: `blog/Book/Refactor/Refactor`,
+      },
     ],
     数据结构与算法: [
       { text: "数据结构", link: `blog/DataAndAlgorithms/data` },
       { text: "算法", link: `blog/DataAndAlgorithms/algorithms` },
     ],
-    图形处理: [
-      { text: "SVG", link: `blog/Graph/svg` },
-    ],
+    图形处理: [{ text: "SVG", link: `blog/Graph/svg` }],
     源码: [{ text: "Vue", link: `blog/SourceCode/vueCode` }],
     工具库: [{ text: "动画库", link: `blog/ToolLibrary/animation` }],
     工程化: [
