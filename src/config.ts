@@ -38,9 +38,9 @@ export const COMMUNITY_INVITE_URL = `https://github.com/yang-xianzhu/blog`;
 
 // See "Algolia" section of the README for more information.
 export const ALGOLIA = {
-  indexName: "coderyzz",
-  appId: "A7DTOIAKHI",
-  apiKey: "29d364d321a2c9b4de00ef1ff296eafb",
+  indexName: "yang-xianzhuio",
+  appId: "O0BJCN2CN8",
+  apiKey: "c471eeb8a590fd6c9f18efdcd60eeb14",
 };
 
 export const BASEURL = "blog";
