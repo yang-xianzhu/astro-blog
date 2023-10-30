@@ -126,7 +126,10 @@ export const SIDEBAR: Sidebar = {
       { text: "算法", link: `blog/DataAndAlgorithms/algorithms` },
     ],
     图形处理: [{ text: "SVG", link: `blog/Graph/svg` }],
-    源码: [{ text: "Vue", link: `blog/SourceCode/vueCode` }],
+    源码: [
+      { text: "Vue", link: `blog/SourceCode/vueCode` },
+      { text: "VueUse", link: `blog/SourceCode/vueUse` },
+    ],
     工具库: [{ text: "动画库", link: `blog/ToolLibrary/animation` }],
     工程化: [
       { text: "Node", link: `blog/Project/node` },
